@@ -1,0 +1,70 @@
+.add-btn {
+    display: block;
+    float: right;
+    background-image: url(https://www.scoopgaming.com.tn/themes/sp_market/css/../img/plus.png);
+    background-position: 3px;
+    background-repeat: no-repeat;
+    background-size: 31px;
+    cursor: pointer;
+    text-decoration: none;
+    color: rgb(12, 12, 12);
+    background-color: #e59053;
+    padding-left: 54px;
+    width: 190px;
+    height: 33px;
+    border-radius: 27px;
+    padding-top: 0px;
+    font-size: 16px;
+}
+.add-btn2 {
+    margin-top: 10px;
+    width: 190px;
+    border-radius: 50px;
+    height: 36px;
+    border: none;
+    line-height: 24px;
+    padding: 6px 20px;
+    float: left;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #202020;
+    background-color: #e59053;
+}
+.checkout-btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: inline-block;
+    margin-left: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #202020;
+    background-color: #e59053;
+    width: 140px;
+    border-radius: 50px;
+    height: 36px;
+    border: none;
+    line-height: 24px;
+    padding: 6px 20px;
+  }
+  
+  
+  .estimated-wattage {
+    width: 90%;
+    float: left;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .estimated-wattage h2 {
+    margin-top: 0;
+    padding-left: 40px;
+  }
+  
+  .estimated-wattage p {
+    font-size: 32px;
+    font-weight: bold;
+    margin-top: -8px;
+    padding-right: 40px;
+    
+  }
+ 
