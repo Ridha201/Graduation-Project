@@ -7,11 +7,13 @@ use App\Models\order;
 use App\Models\order_items;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\OrderConfirmationEmail;
-
-
-
-
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use Illuminate\Support\Facades\Session;
+use PDF; 
 use Illuminate\Http\Request;
+use App\Models\product;
+use App\Models\stock_notifier;
 
 class CheckoutController extends Controller
 {
@@ -50,6 +52,7 @@ class CheckoutController extends Controller
                     'productName' => $item->productName,
                     'productImage' => $item->productImage,
                 ]);
+                product::where('id', $item->productID)->decrement('productStock', $item->productQuantity);
             }
             Cart::where('userID', Auth::user()->id)->delete();
             if($req->payment_mode == "Paid with PayPal"){
@@ -86,13 +89,15 @@ class CheckoutController extends Controller
                     'productName' => $item->productName,
                     'productImage' => $item->productImage,
                 ]);
+                product::where('id', $item->productID)->decrement('productStock', $item->productQuantity);
             }
             Cart::where('userID', Auth::user()->id)->delete();
             $link = url('http://127.0.0.1:8000/confirmation' . $order->id);
             $data = [
             'link' => $link,
              ];
-             Mail::to($req->email)->send(new OrderConfirmationEmail($data));   
+             Mail::to($req->email)->send(new OrderConfirmationEmail($data));
+             return view('emailsent');   
         }
        public function setOrderStatus(Request $req){
            $order = order::find($req->order_id);
@@ -104,7 +109,24 @@ class CheckoutController extends Controller
        public function getOrder(){
            $orders = order::where('userID', Auth::user()-> id)->get();
            return view('orderconfirmation', ['orders' => $orders]);
+
        }  
+       public function getOrderDetails(){
+           $order = order::where('userID', Auth::user()-> id)->first();
+           $orderItems = order_items::where('order_id', $order->id)->get();
+           $orders = order::where('userID', Auth::user()-> id)->get();
+           return view('myorders', ['orders' => $orders, 'orderItems' => $orderItems]);
+       }
+
+       public function stockEmailNotify(Request $req){
+           $stockNotifier = new stock_notifier;
+           $stockNotifier->product_id = $req->product_id;
+           $stockNotifier->email = $req->email;
+           $stockNotifier->save();
+           return response()->json(['status' => 'success']);
+       }
+
+
 }
 
 

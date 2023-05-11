@@ -71,23 +71,7 @@
             </div><!-- Section Title End -->
             
             <!-- Product Tab Filter Start -->
-            <div class="col-12 mb-30">
-                <div class="product-tab-filter">
-                    
-                    <!-- Tab Filter Toggle -->
-                    <button class="product-tab-filter-toggle">showing: <span></span><i class="icofont icofont-simple-down"></i></button>
-                    
-                    <!-- Product Tab List -->
-                    <ul class="nav product-tab-list">
-                        <li><a class="active" data-bs-toggle="tab" href="#tab-one">all</a></li>
-                        <li><a data-bs-toggle="tab" href="#tab-two">pc gaming</a></li>
-                        <li><a data-bs-toggle="tab" href="#tab-one">consols</a></li>
-                        <li><a data-bs-toggle="tab" href="#tab-two">gaming accessories</a></li>
-                        <li><a data-bs-toggle="tab" href="#tab-one">pc components</a></li>
-                    </ul>
-                    
-                </div>
-            </div><!-- Product Tab Filter End -->
+          
             
             <!-- Product Tab Content Start -->
             <div class="col-12">
@@ -504,21 +488,7 @@
                         
                     <!-- Product Tab Filter Start -->
                     <div class="col mb-30">
-                        <div class="product-tab-filter">
-                            <!-- Tab Filter Toggle -->
-                            <button class="product-tab-filter-toggle">showing: <span></span><i class="icofont icofont-simple-down"></i></button>
-                            
-                            <!-- Product Tab List -->
-                            <ul class="nav product-tab-list">
-                                <li><a class="active" data-bs-toggle="tab" href="#tab-three">all</a></li>
-                                <li><a data-bs-toggle="tab" href="#tab-four">LAPTOP</a></li>
-                                <li><a data-bs-toggle="tab" href="#tab-three">DRONE</a></li>
-                                <li><a data-bs-toggle="tab" href="#tab-four">TV & AUDIO</a></li>
-                                <li><a data-bs-toggle="tab" href="#tab-three">PHONE & TABLET</a></li>
-                                <li><a data-bs-toggle="tab" href="#tab-four">CAMERA & PRINTER</a></li>
-                            </ul>
-
-                        </div>
+                        
                     </div><!-- Product Tab Filter End -->
                     
                     <!-- Offer Time Wrap Start -->
@@ -527,7 +497,7 @@
                             <h1><span>UP TO</span> 55%</h1>
                             <h3>QUALITY & EXCLUSIVE <span>PRODUCTS</span></h3>
                             <h4><span>LIMITED TIME OFFER</span> GET YOUR PRODUCT</h4>
-                            <div class="countdown" data-countdown="2023/12/20"></div>
+                            <div class="countdown" data-countdown="2024/12/20"></div>
                         </div>
                     </div><!-- Offer Time Wrap End -->
 

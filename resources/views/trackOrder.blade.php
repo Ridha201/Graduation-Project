@@ -16,7 +16,7 @@
                         <input type="text" id="order_id" placeholder="Find it in your order confirmation email">
                         <label for="billing_email">Billing Email Address</label>
                         <input type="email" id="billing_email" placeholder="Email you used during checkout">
-                        <input type="submit" value="Track Order">
+                        <input type="submit" class="stockbtn"value="Track Order">
                     </form>
                 </div>
             </div>

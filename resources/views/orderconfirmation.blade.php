@@ -70,6 +70,7 @@
 		<button class="confirm-order">Confirm Order</button>
 		@endforeach
 	</div>
+	
 </body>
 </html>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -83,21 +84,26 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+		
         
         $.ajax({
             method : "POST",
-            url : "/set-order-status",
+            url : "http://127.0.0.1:8000/set-order-status",
             data : {
                 order_id : order_id,
 				status : 'confirmed'
+				
             },
+			
             success : function(response){
 				console.log(response);
 				if(response.status == 'success'){
-					window.location.href = '/placed';
+					window.location.href = 'http://127.0.0.1:8000/placed';
 				}
 			}
         });
+
+		
     });
 	
 </script>

@@ -15,7 +15,6 @@
                                     <th class="pro-title">Product</th>
                                     <th class="pro-price">Price</th>
                                     <th class="pro-quantity">Quantity</th>
-                                   
                                     <th class="pro-remove">Remove</th>
                                 </tr>
                             </thead>
@@ -24,6 +23,7 @@
                               @foreach($data as $item)
                                 <tr data-product-container="{{$item->id}}">
                                     <input type="hidden" class="cart_id" id="product_id_{{ $item->id }}" value="{{$item->id}}">
+                                    <input type="hidden" class="product_stock"  value="{{$item->productStock}}" >
                                     <input type="hidden" class="product_id" id="product_id_{{ $item->productID }}" value="{{$item->productID}}">
                                     <td class="pro-thumbnail"><a href="#"><img src="assets/images/uploads/{{$item->productImage}}" alt="Product"></a></td>
                                     <td class="pro-title"><a href="#">{{$item->productName}}</a></td>

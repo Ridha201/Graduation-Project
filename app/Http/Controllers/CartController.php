@@ -48,16 +48,19 @@ class CartController extends Controller
     }
 
     public function getCart(Request $request)
-    {
-        $data = null;
-        if(Auth::check()){
-           $user = Auth::user();
-           $data = Cart::where('userID', $user->id)->get();
-          
-          
+{
+    $data = null;
+    if(Auth::check()){
+        $user = Auth::user();
+        $data = Cart::where('userID', $user->id)->get();
+        
+        foreach($data as $cartItem) {
+            $product = Product::find($cartItem->productID);
+            $cartItem->productStock = $product->productStock;
         }
-        return view('cart', ['data' => $data]);
     }
+    return view('cart', ['data' => $data]);
+}
 
     public function modifyCart(Request $request){
         $product_id = $request->input('product_id');
@@ -84,6 +87,9 @@ class CartController extends Controller
         $cart->delete();
         return response()->json(['status'=> 'deleted ']);
     }
+
+    
+    
 
 
  

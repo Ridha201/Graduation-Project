@@ -59,10 +59,10 @@
                     <!-- Header Advance Search Start -->
                     <div class="header-advance-search">
                         
-                        <form action="#">
-                            <div class="input"><input type="text" placeholder="Search your product"></div>
+                        <form action="{{ route('list.getProduct') }}" method="GET">
+                            <div class="input"><input type="text" name="query" placeholder="Search your product"></div>
                             <div class="select">
-                                <select class="nice-select">
+                                <select class="nice-select" name="category">
                                     <option>All Categories</option>
                                     <option>GAMING PC</option>
                                     <option>CONSOLS</option>
@@ -87,12 +87,26 @@
 
                 <div class="col order-2 order-lg-12 mt-10 mb-10">
                     <!-- Header Account Links Start -->
-                    
-                    
+                    @if (Auth::check())
+                    <div class="user-dropdown">
+                        <div class="btn " style="background-color : trasparent; border: 1px solid #ffffff; padding: 3px 10px;">Welcome, {{ explode(' ', Auth::user()->name)[0] }}!</div>
+                        <ul class="user-dropdown-menu">
+                          <li><a href="/orders">My Orders</a></li>
+                          <li><a href="#">My Account</a></li>
+                          <li>
+                            <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                              @csrf
+                            </form>
+                          </li>
+                        </ul>
+                      </div>
+                      @else
                     <div class="header-account-links">
                         <a href="register"><i class="icofont icofont-user-alt-7"></i> <span>Register</span></a>
                         <a href="login"><i class="icofont icofont-login d-none"></i> <span>Login</span></a>
                     </div><!-- Header Account Links End -->
+                    @endif
                     
                 </div>
 
@@ -395,6 +409,7 @@
 <script src="assets/js/ajax-mail.js'"></script>
 <!-- Main JS -->
 <script src="assets/js/main.js"></script>
+<script src="assets/js/modal.js"></script>
 
 </body>
 

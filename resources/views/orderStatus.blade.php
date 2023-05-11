@@ -1,55 +1,85 @@
-@extends('theme')
-@section('content')
-<head>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
     <link rel="stylesheet" type="text/css" href="assets/css/theme.css">
-</head>
- <section class="pt-50 pb-120 tracking-wrap ">   
-    <div class=" row" >    
-                <h1 class="section-title pt-10 pb-10" style="text-align: center"> ordernumber#876133473 </h1>
-    </div>
-        <div class="row" style="text-align: center">
-            <div class="col-md-5 pad-30 wow fadeInRight" data-wow-offset="50" data-wow-delay=".30s"> 
-                <div class="prod-info white-clr">
-                    <ul class="except">
-                        <li> <span class="title-2">Product Name:</span> <span class="fs-16">iPhone 6 Boxed</span> </li>
-                        <li> <span class="title-2">Product id:</span> <span class="fs-16">9034215</span> </li>
-                        <li> <span class="title-2">order date:</span> <span class="fs-16">21st Feb, 2016</span> </li>
-                        <li> <span class="title-2">order status:</span> <span class="fs-16 theme-clr">On Process</span> </li>
-                        <li> <span class="title-2">weight (kg):</span> <span class="fs-16">0.85 KG</span> </li>
-                        <li> <span class="title-2">order type:</span> <span class="fs-16">Basic ($50)</span> </li>
-                    </ul>
-                </div>
-            </div>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Bootstrap 4.3.1 CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <!-- FontAwesome 4.7.0 CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
+      integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="stylesheet" href="./style.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container px-1 px-md-4 py-5 mx-auto">
+      <div class="card">
+        <div class="row d-flex justify-content-between px-3 top">
+          <div class="d-flex">
+            <h5>
+              ORDER
+              <span class="text-primary font-weight-bold">#YWSNWDAAW</span>
+            </h5>
+          </div>
+          <div class="d-flex flex-column text-sm-right">
+            <p class="mb-0">
+              Expected Arrival <span class="font-weight-bold">29 Aug 2022</span>
+            </p>
+            <p>
+              USPS <span class="font-weight-bold">2374723467163473124234</span>
+            </p>
+          </div>
         </div>
-        <div class="progress-wrap">
-            <div class="progress-status">
-                <span class="border-left"></span>
-                <span class="border-right"></span>
-                <span class="dot dot-left wow fadeIn" data-wow-offset="50" data-wow-delay=".40s"></span>
-                <span class="themeclr-border wow fadeIn" data-wow-offset="50" data-wow-delay=".50s">  <span class="dot dot-center theme-clr-bg"></span> </span>
-                <span class="dot dot-right wow fadeIn" data-wow-offset="50" data-wow-delay=".60s"></span>
-            </div>
-            <div class="row progress-content upper-text">
-                <div class="col-md-3 col-xs-8 col-sm-2">
-                    <p class="fs-12 no-margin"> FROM </p>
-                    <h2 class="title-1 no-margin">London</h2>
-                </div>
-                <div class="col-md-2 col-xs-8 col-sm-3">
-                    <p class="fs-12 no-margin"> [ <b class="black-clr">6 DAYS </b> ] </p>                                
-                </div>
-                <div class="col-md-4 col-xs-8 col-sm-4 text-center">
-                    <p class="fs-12 no-margin"> currently in </p>
-                    <h2 class="title-1 no-margin">singapore</h2>
-                </div>
-                <div class="col-md-1 col-xs-8 col-sm-1 no-pad">
-                    <p class="fs-12 no-margin"> [ <b class="black-clr">2 DAYS </b> ] </p>                                
-                </div>
-                <div class="col-md-2 col-xs-8 col-sm-2 text-right">
-                    <p class="fs-12 no-margin"> to </p>
-                    <h2 class="title-1 no-margin">dhaka</h2>
-                </div>
-            </div>
+        <!-- Add class "active" to progress -->
+        <div class="row d-flex justify-content-center">
+          <div class="col-12">
+            <ul id="progressbar" class="text-center">
+              <li class="active step0"></li>
+              <li class="active step0"></li>
+              <li class="active step0"></li>
+              <li class="step0"></li>
+            </ul>
+          </div>
         </div>
+        <div class="row justify-content-between top">
+          <div class="row d-flex icon-content">
+            <img src="assets/images/CheckList.png" alt="" class="icon" />
+            <div class="d-flex flex-column">
+              <p class="font-weight-bold">Order <br />Processed</p>
+            </div>
+          </div>
+          <div class="row d-flex icon-content">
+            <img src="assets/images/Delivery.png" alt="" class="icon" />
+            <div class="d-flex flex-column">
+              <p class="font-weight-bold">Order <br />Shipped</p>
+            </div>
+          </div>
+          <div class="row d-flex icon-content">
+            <img src="assets/images/Shipping.png" alt="" class="icon" />
+            <div class="d-flex flex-column">
+              <p class="font-weight-bold">Order <br />En Route</p>
+            </div>
+          </div>
+          <div class="row d-flex icon-content">
+            <img src="assets/images/Home.png" alt="" class="icon" />
+            <div class="d-flex flex-column">
+              <p class="font-weight-bold">Order <br />Arrival</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</section>
-@endsection
+  </body>
+</html>
