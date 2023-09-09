@@ -73,8 +73,10 @@ $(document).ready(function(){
         const loginBtn2 = document.getElementById("login-btn2");
         const closeBtn2 = document.querySelector(".close-btn2");
         
+        
         // When the user clicks the review button, show the login modal
         addToCartBtn.addEventListener("click", (event) => {
+          
           // Check if user is logged in first, if not show login modal
           if (!isLoggedIn()) {
             loginModal2.style.display = "block";

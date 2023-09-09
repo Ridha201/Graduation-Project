@@ -5,13 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class GPU extends Model
+class RAM extends Model
 {
     use HasFactory;
-    protected $table = 'g_p_u_s';
+    protected $table = 'r_a_m_s';
     protected $fillable = [
         'productID',
-        'wattage',
-        'gpuFormFactor',
+        'frequency',
+        'capacity',
+        'generation',
+        'slots',
     ];
 }
+
+

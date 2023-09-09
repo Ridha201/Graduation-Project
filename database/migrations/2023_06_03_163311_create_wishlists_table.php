@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGPUSTable extends Migration
+class CreateWishlistsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,15 @@ class CreateGPUSTable extends Migration
      */
     public function up()
     {
-        Schema::create('g_p_u_s', function (Blueprint $table) {
+        Schema::create('wishlists', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->integer('productID');
-            $table->integer('wattage');
-            $table->integer('formFactor');
+            $table->string('productID');
+            $table->string('userID');
+            $table->string('productName');
+            $table->string('productImage');
+            $table->string('productQuantity');
+            $table->string('productPrice');
         });
     }
 
@@ -29,6 +32,6 @@ class CreateGPUSTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('g_p_u_s');
+        Schema::dropIfExists('wishlists');
     }
 }

@@ -13,5 +13,12 @@ class MBD extends Model
         'productID',
         'compatibility',
         'wattage',
+        'mbdFormFactor',
+        'ramSlots',
+        'ramGen',
+        'maxSupportedRamCapacity',
+        'maxSupportedRamFrequency',
+       
+
     ];
 }

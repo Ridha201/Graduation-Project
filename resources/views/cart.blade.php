@@ -59,7 +59,7 @@
                                 <p>Shipping Cost <span>$10.00</span></p>
                                 <h2>Grand Total <span class="grand_total">${{$total+10}}.00</span></h2>
                                 <div class="cart-summary-button" style="margin-top: 20px">
-                                    <a href="checkout"><button class="checkout-btn" type="submit">Checkout</button></a>
+                                    <a href="checkout"><button class="checkout-btn " type="submit">Checkout</button></a>
                                 </div>
                             </div>
                            
@@ -74,7 +74,7 @@
 </div>
 @elseif($data!=null && count($data)==0)
 <div class="col-sm-12 empty-cart-cls text-center">
-    <img src="assets/images/emptyCart.png"  class="img-fluid mb-4 mr-3">
+    <img src="assets/images/carts.png"  class="img-fluid mb-4 mr-3" style="padding-right: 50px; margin-top:30px">
     <h3><strong>Your Cart is Empty</strong></h3>
     <h4>Add something to make me happy :)</h4>
     <a href="/" class="btn btn-primary cart-btn-transform m-3" data-abc="true" style="background-color : #e59053; border: 1px solid #f18327;">continue shopping</a>
@@ -82,7 +82,7 @@
 
 @elseif($data==null)
 <div class="col-sm-12 empty-cart-cls text-center">
-    <img src="assets/images/emptyCart.png"  class="img-fluid mb-4 mr-3">
+    <img src="assets/images/carts.png"  class="img-fluid mb-4 mr-3" style="padding-right: 50px; margin-top:30px">
     <h3><strong>Your Cart is Empty</strong></h3>
     <h4>Log in to add itemes to your cart</h4>
     <a href="/login" class="btn btn-primary cart-btn-transform m-3" data-abc="true" style="background-color : #e59053; border: 1px solid #f18327;">Log in </a>

@@ -1,6 +1,6 @@
 @extends('theme')
 @section('content')
-
+<link rel="stylesheet" href="assets/css/modal.css">
 <div class="product-section section ">
     <div class="">
         <div class="row">
@@ -63,7 +63,14 @@
                 <!-- Shop Product Wrap Start -->
                 
                 <div class="shop-product-wrap product_data grid row">
-                    @foreach ($donnee as $i)
+                    @foreach ($products as $productData)
+                    @php
+                    $i = $productData['product'];
+                    $discountedPrice = $productData['discountedPrice'];
+                    $discounted = $productData['discounted'];
+                    $start_date = $productData['start_date'];
+                    $end_date = $productData['end_date'];
+                    @endphp
                     <div class="col-xl-3 col-lg-4 col-md-6 col-12 pb-30 pt-10">
                        
                         <!-- Product Start -->
@@ -73,19 +80,41 @@
                             <!-- Image -->
                             <div class="image product" >
                                 
+                                @if ($discounted && $start_date <= now() && $end_date >= now())
+                                <span class="label new">sale</span>
+                                @endif
+                                
 
                                 <a href="{{ route('single-product', ['id' => $i['id']]) }}" class="img"><img src="assets/images/uploads/{{$i['productImage']}}" alt="Product Image"></a>
 
                                 <div class="wishlist-compare">
-                                    <a href="" data-tooltip="Compare"><i class="ti-control-shuffle"></i></a>
-                                    <a href="" data-tooltip="Wishlist"><i class="ti-heart"></i></a>
+                                   
+                                    <a href="" data-tooltip="Wishlist" class="addToWhishlistBtn"><i class="ti-heart"></i></a>
+                                    <div id="login-modal3" class="modal">
+                                        <div class="modal-content">
+                                          <h2>Login to Continue</h2>
+                                          <p>You must be logged in to add items to your busket.</p>
+                                          <button class="btn" id="login-btn2">Login</button>
+                                          <span class="close-btn2 ">&times;</span>
+                                        </div>
+                                    </div> 
                                 </div>
 
                                 <input type="hidden" class="product_id" value="{{$i->id}}">
                                 <input type="hidden" class="product_quantity" value="1">
 
                                 
-                                <a href="#" class="add-to-cart addToCartBtn"><i class="ti-shopping-cart "></i><span>ADD TO CART</span></a>
+                                @if ($i['productStock'] > 0)
+                                <a href="#" class="add-to-cart addToCartBtn"><i class="ti-shopping-cart update-cart"></i><span>ADD TO CART</span></a> 
+                                <div id="login-modal2" class="modal">
+                                    <div class="modal-content">
+                                      <h2>Login to Continue</h2>
+                                      <p>You must be logged in to add items to your busket.</p>
+                                      <button class="btn" id="login-btn2">Login</button>
+                                      <span class="close-btn2 ">&times;</span>
+                                    </div>
+                                </div> 
+                                @endif
 
                             </div>
 
@@ -102,8 +131,11 @@
 
                                 <!-- Price & Ratting -->
                                 <div class="price-ratting">
-
+                                    @if ($discounted && $start_date <= now() && $end_date >= now())
+                                    <h5 class="price"><span class="old" style="color: red">${{$i['productPrice']}} </span>${{$discountedPrice}}</h5>
+                                    @else
                                     <h5 class="price">${{$i['productPrice']}}</h5>
+                                    @endif
                                     <div class="ratting">
                                         @if ($i['productStock'] > 0)
                                         <span class="availability"><span style="color: green; font-weight: 700 ;">In Stock</span></span>
@@ -124,7 +156,7 @@
                             <!-- Image -->
                             <div class="image">
 
-                                <a href="" class="img"><img src="assets/images/uploads/{{$i['productImage']}}" alt="Product Image"></a>
+                                <a href="{{ route('single-product', ['id' => $i['id']]) }}" class="img"><img src="assets/images/uploads/{{$i['productImage']}}" alt="Product Image"></a>
 
                             </div>
 
@@ -163,8 +195,7 @@
                                         <a href="#" class="add-to-cart"><i class="ti-shopping-cart addToCartBtn"></i><span>ADD TO CART</span></a>
 
                                         <div class="wishlist-compare">
-                                            <a href="#" data-tooltip="Compare"><i class="ti-control-shuffle"></i></a>
-                                            <a href="#" data-tooltip="Wishlist"><i class="ti-heart"></i></a>
+                                            <a href="" data-tooltip="Wishlist" class="addToWhishlistBtn"><i class="ti-heart"></i></a>
                                         </div>
                                         
                                     </div>
@@ -173,7 +204,12 @@
                                 
                                 <div class="right-content">
                                     <div class="">
+                                        @if ($discounted== true)
+                                        <h1 style="font-weight: bold">${{$discountedPrice}}</h1>
+                                        @elseif ($discounted == false)
                                         <h1 style="font-weight: bold">${{$i['productPrice']}}</h1>
+                                        @endif
+                                        
                                     </div>
                                     @if ($i['productStock'] > 0)
                                     <span class="availability">Availability: <span style="color: green">In Stock</span></span>
@@ -217,4 +253,66 @@
     </div>
 </div><!-- Feature Product Section End -->
 @endsection
-<script src="assets/js/bootstrap.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+$(document).ready(function(){
+        const addToCartBtn = document.querySelector(".add-to-cart");
+        const loginModal2 = document.getElementById("login-modal2");
+        const loginBtn2 = document.getElementById("login-btn2");
+        const closeBtn2 = document.querySelector(".close-btn2");
+       
+        
+        $(".add-to-cart").on("click", function(event) {
+          if (!isLoggedIn()) {
+            loginModal2.style.display = "block";
+            event.preventDefault();
+          } else {
+           
+          }
+        });
+    
+        loginBtn2.addEventListener("click", () => {
+          loginModal2.style.display = "none";
+          window.location.href = "http://127.0.0.1:8000/login";
+        });
+        
+
+        closeBtn2.addEventListener("click", () => {
+          loginModal2.style.display = "none";
+        });
+ 
+        window.addEventListener("click", (event) => {
+          if (event.target == loginModal2 && loginModal2.style.display === "block") {
+            loginModal2.style.display = "none";
+          }
+        });
+
+        function isLoggedIn() {
+
+          let loggedIn = false;
+        
+          $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+          });
+        
+          $.ajax({
+            type: "POST",
+            url: "/check-login",
+            async: false,
+            success: function (response) {
+              if (response.loggedIn) {
+                loggedIn = true;
+              }
+            },
+            error: function () {
+              console.log("Error occurred while checking login status.");
+            },
+          });
+        
+          return loggedIn;
+        }
+        });
+</script>
+

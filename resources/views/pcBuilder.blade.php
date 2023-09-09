@@ -26,13 +26,40 @@
     font-weight: 600;
     margin-left: 10px;
 }
+.alert {
+  position: relative;
+  top: 10;
+  left: 0;
+  width: auto;
+  height: auto;
+  padding: 10px;
+  margin: 10px;
+  line-height: 1.8;
+  border-radius: 5px;
+  cursor: hand;
+  cursor: pointer;
+  font-family: sans-serif;
+  font-weight: 400;
+}
+
+.alertText {
+  display: table;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 11px;
+}
+.error {
+  background-color: rgb(243, 235, 222);
+  border: 1px solid rgb(216, 178, 109);
+  color: rgb(221, 150, 83);
+}
 
 .modal-content {
   background-color: #fefefe;
   margin: auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 50%;
+  width: 60%;
 }
 
 
@@ -111,6 +138,7 @@
               <td id="empty-cpu"> 
                 <div class="component-info">
                 <img id="add-component-img" src="assets/images/cpu.png" width="100" height="100">
+                <span id="add-component-id"></span>
                 <span class="smallname" id="add-component-name"></span>
                 <span class="price" id="add-component-price"></span>
                 <span id="add-component-wattage-input"></span><span id="add-component-brand-input"></span>
@@ -120,43 +148,43 @@
             </tr>
             <tr>
               <td><b>Motherboard</b></td>
-              <td id="empty-mbd"><div class="component-info"><span><img id="add-mbd-component-img" src="assets/images/mbd.png" width="100" height="100"></span><span class="smallname"id="add-mbd-component-name"></span>
-                <span class="price" id="add-mbd-component-price"></span><span id="add-mbd-component-wattage-input"></span><span id="add-mbd-component-compatibility-input"></span><span class="price" id="add-mbd-component-price-input"></span></div></td>
+              <td id="empty-mbd"><div class="component-info"><span id="add-mbd-component-id"></span><span><img id="add-mbd-component-img" src="assets/images/mbd.png" width="100" height="100"></span><span class="smallname"id="add-mbd-component-name"></span>
+                <span class="price" id="add-mbd-component-price"></span><span id="add-mbd-component-wattage-input"></span><span id="add-mbd-component-compatibility-input"><span id="add-mbd-component-mbdFormFactor-input"><span id="add-mbd-component-ramSlots-input"><span id="add-mbd-component-ramGen-input"></span><span class="price" id="add-mbd-component-price-input"></span><span id="add-mbd-component-maxSupportedRamFrequency-input"></span><span id="add-mbd-component-maxSupportedRamCapacity-input"></span></div></td>
               <td id="parent-element-id2"><button class="btn " id="add-mbd-btn"style="background-color: #e59053" ><b>Add </b></button></td>
             </tr>
             <tr>
               <td><b>Graphic card</b></td>
-              <td id="empty-gpu"><div class="component-info"><span><img id="add-gpu-component-img" src="assets/images/gpu.png" width="100" height="100"></span><span class="smallname"id="add-gpu-component-name"></span>
-                <span class="price" id="add-gpu-component-price"></span><span id="add-gpu-component-wattage-input"></span><span class="price" id="add-gpu-component-price-input"></span></div></td>
+              <td id="empty-gpu"><div class="component-info"><span><span id="add-gpu-component-id"></span><img id="add-gpu-component-img" src="assets/images/gpu.png" width="100" height="100"></span><span class="smallname"id="add-gpu-component-name"></span>
+                <span class="price" id="add-gpu-component-price"></span><span id="add-gpu-component-wattage-input"></span><span id="add-gpu-component-gpuFormFactor-input"></span><span class="price" id="add-gpu-component-price-input"></span></div></td>
               <td id="parent-element-id3"><button class="btn " id="add-gpu-btn"style="background-color: #e59053" ><b>Add </b></button></td>
             </tr>
             <tr>
               <td><b>Memory</b></td>
-              <td id="empty-ram"><div class="component-info"><span><img id="add-ram-component-img" src="assets/images/ram.png"width="100" height="100"></span><span class="smallname"id="add-ram-component-name"></span>
-                <span class="price" id="add-ram-component-price"></span><span class="price" id="add-ram-component-price-input"></span></div></td>
+              <td id="empty-ram"><div class="component-info"><span><span id="add-ram-component-id"></span><img id="add-ram-component-img" src="assets/images/ram.png"width="100" height="100"></span><span class="smallname"id="add-ram-component-name"></span>
+                <span class="price" id="add-ram-component-price"></span><span class="price" id="add-ram-component-price-input"></span><span id="add-ram-component-frequency-input"></span><span id="add-ram-component-capacity-input"></span><span id="add-ram-component-generation-input"></span><span id="add-ram-component-slots-input"></span></div></td>
               <td id="parent-element-id4"><button class="btn " id="add-ram-btn" style="background-color: #e59053"><b>Add </b></button></td>
             </tr>
             <tr>
               <td><b>Storage</b></td>
-              <td id="empty-storage"><div class="component-info"><span><img id="add-storage-component-img" src="assets/images/ssd.png" width="100" height="100"></span><span class="smallname"id="add-storage-component-name"></span>
+              <td id="empty-storage"><div class="component-info"><span><span id="add-storage-component-id"></span><img id="add-storage-component-img" src="assets/images/ssd.png" width="100" height="100"></span><span class="smallname"id="add-storage-component-name"></span>
                 <span class="price" id="add-storage-component-price"></span><span class="price" id="add-storage-component-price-input"></span></div></td>
               <td id="parent-element-id5"><button class="btn " id="add-storage-btn"style="background-color: #e59053" ><b>Add </b></button></td>
             </tr>
             <tr>
               <td><b>Cooling</b></td>
-              <td id="empty-cooling"><div class="component-info"><span><img id="add-cooler-component-img" src="assets/images/cooler.png" width="100" height="100"></span><span class="smallname"id="add-cooler-component-name"></span>
+              <td id="empty-cooling"><div class="component-info"><span><span id="add-cooler-component-id"></span><img id="add-cooler-component-img" src="assets/images/cooler.png" width="100" height="100"></span><span class="smallname"id="add-cooler-component-name"></span>
                 <span class="price" id="add-cooler-component-price"></span><span class="price" id="add-cooler-component-price-input"></span></div></td>
               <td id="parent-element-id6"><button class="btn " id="add-cooling-btn" style="background-color: #e59053"><b>Add </b></button></td>
             </tr>
             <tr>
               <td><b>Case</b></td>
-              <td id="empty-case"><div class="component-info"><span><img id="add-case-component-img" src="assets/images/case.png" width="100" height="100"></span><span class="smallname"id="add-case-component-name"></span>
-                <span class="price" id="add-case-component-price"></span><span class="price" id="add-case-component-price-input"></span></div></td>
+              <td id="empty-case"><div class="component-info"><span><span id="add-case-component-id"></span><img id="add-case-component-img" src="assets/images/case.png" width="100" height="100"></span><span class="smallname"id="add-case-component-name"></span>
+                <span class="price" id="add-case-component-price"></span><span class="price" id="add-case-component-price-input"></span><span id="add-case-component-formFactor-input"></span></div></td>
               <td id="parent-element-id7"><button class="btn " id="add-case-btn"style="background-color: #e59053" ><b>Add </b></button></td>
             </tr>
             <tr>
               <td><b>Power supply</b></td>
-              <td id="empty-psu"><div class="component-info"><span><img id="add-psu-component-img" src="assets/images/psu.png"width="100" height="100"></span><span class="smallname"id="add-psu-component-name"></span>
+              <td id="empty-psu"><div class="component-info"><span><span id="add-psu-component-id"></span><img id="add-psu-component-img" src="assets/images/psu.png"width="100" height="100"></span><span class="smallname"id="add-psu-component-name"></span>
                 <span class="price" id="add-psu-component-price"></span><span class="price" id="add-psu-component-price-input"></span></div></td>
               <td id="parent-element-id8"><button class="btn CPU" id="add-psu-btn" style="background-color: #e59053"><b>Add </b></button></td>
             </tr>
@@ -172,14 +200,14 @@
             <h2 class="title-3  "  style="margin-left: 16px;">Estimated Wattage  <p class=" estimated-wattage-needed" style="font-size: 30">0W</p></h2>
              </th>
              <th style="background-color: #efd9bb ;    ">
-              <h2 class="title-3  "  style="margin-left: 16px;">total price  <p class="total-pc-build-price" style="font-size: 30">$00.00</p></h2>
+              <h2 class="title-3  "  style="margin-left: 16px;">total price  <p id ="total-pc-build-price"class="total-pc-build-price" style="font-size: 30">$00.00</p></h2>
                </th>
           </tr>
         </tbody>
       </table>
         
       
-              <form action="/contact" style="    width: 487px;margin-top: 14px;" method='post' class="checkout-form">
+              <form  style="    width: 487px;margin-top: 14px;"  class="checkout-form">
                 <div class="row">
 
                   <div class="col-md-6 col-12 mb-20">
@@ -234,7 +262,9 @@
                  
 
               </div>
+             
               </form>
+              @if (Auth::check())
               <div class="col-12 mb-60">
                                
                 <h4 class="checkout-title">Payment Method</h4>
@@ -251,9 +281,11 @@
                      <label for="payment_paypal">Paypal</label>
                  </div>
              
-                 <button  class=" btn " id="place-order-btn" style="display:none; shape:pill ; background-color: #e59053" >Place order</button>
-                 <div id="paypal-button-container"  style="display:none; margin-top: 5px"></div>
+                 <button  class=" btn ondelivery" id="place-order-btn" style="display:none; shape:pill ; background-color: #e59053" >Place order</button>
+                 <div id="paypal-button-container"  style=" display:none;margin-top: 5px"></div>
              </div>
+              @endif
+              
               
         
         </div>
@@ -285,23 +317,135 @@
       </div>
 </div>
 @endsection
+<script src="https://www.paypal.com/sdk/js?client-id=AeXCNA-SyyI-g_JXp_z2NgNw2yP5vuOi97ldXmZbiHUZ8BW6g0a1NUyHM4kt7NJPUE-VnLeonpkb4xmm"></script>
 <script>
-    function togglePaymentButtons() {
-        var cashRadio = document.getElementById("payment_cash");
-        var paypalRadio = document.getElementById("payment_paypal");
-        var placeOrderBtn = document.getElementById("place-order-btn");
-        var paypalBtnContainer = document.getElementById("paypal-button-container");
-    
-        if (cashRadio.checked) {
-            placeOrderBtn.style.display = "block";
-            paypalBtnContainer.style.display = "none";
-        } else if (paypalRadio.checked) {
-            placeOrderBtn.style.display = "none";
-            paypalBtnContainer.style.display = "block";
-        }
-    }
-    </script>
+    paypal.Buttons({
+        style: {
+            shape: 'pill',
+            color: 'gold',
+            layout: 'vertical',
+            label: 'paypal',
+        },
+        createOrder: function(data, actions) {
+            var name = $('.name').val();
+            var lastname = $('.lastname').val();
+            var email = $('.email').val();
+            var phone = $('.phone').val();
+            var address1 = $('.address1').val();
+            var address2 = $('.address2').val();
+            var state = $('.state').val();
+            var zipcode = $('.zipcode').val();
+            var cpu = $('#add-component-id').val();
+            var gpu = $('#add-gpu-component-id').val();
+            var ram = $('#add-ram-component-id').val();
+            var mbd = $('#add-mbd-component-id').val();
+            var psu = $('#add-psu-component-id').val();
+            var storage = $('#add-storage-component-id').val();
+            var cases = $('#add-case-component-id').val();
+            var cooler = $('#add-cooler-component-id').val();
+            var total = $('#total-pc-build-price').val();
 
+            
+            return actions.order.create({
+                purchase_units: [{
+                    amount: {
+                        value: total
+                    }
+                }]
+            });
+        },
+        onApprove: function(data, actions) {
+            // Validate form inputs before submitting
+            var name = $('.name').val();
+            var lastname = $('.lastname').val();
+            var email = $('.email').val();
+            var phone = $('.phone').val();
+            var address1 = $('.address1').val();
+            var address2 = $('.address2').val();
+            var state = $('.state').val();
+            var zipcode = $('.zipcode').val();
+            var cpu = $('#add-component-id').val();
+            var gpu = $('#add-gpu-component-id').val();
+            var ram = $('#add-ram-component-id').val();
+            var mbd = $('#add-mbd-component-id').val();
+            var psu = $('#add-psu-component-id').val();
+            var storage = $('#add-storage-component-id').val();
+            var pccase = $('#add-case-component-id').val();
+            var cooler = $('#add-cooler-component-id').val();
+            var total = $('#total-pc-build-price').val();
+            var type = 'paypal';
+
+            
+
+            // Submit form data if inputs are valid
+            return actions.order.capture().then(function(details) {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                $.ajax({
+                    method: "POST",
+                    url: "/pc-builder-order",
+                    data: {
+                        'name': name,
+                        'lastname': lastname,
+                        'email': email,
+                        'phone': phone,
+                        'address1': address1,
+                        'address2': address2,
+                        'state': state,
+                        'zipcode': zipcode,
+                        'cpu': cpu,
+                        'gpu': gpu,
+                        'ram': ram,
+                        'mbd': mbd,
+                        'psu': psu,
+                        'storage': storage,
+                        'case': pccase,
+                        'cooler': cooler,
+                        'type': type,
+                    },
+                    success: function(response) {
+                        window.location.href = "/placed";
+                    }
+                });
+
+                // Call your server to save the transaction
+                return fetch('/paypal-transaction-complete', {
+                    method: 'post',
+                    headers: {
+                        'content-type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        orderID: data.orderID
+                    })
+                });
+            });
+        }
+    }).render('#paypal-button-container'); // Display payment options on your web page
+</script>
+<script>
+  function togglePaymentButtons() {
+      var cashRadio = document.getElementById("payment_cash");
+      var paypalRadio = document.getElementById("payment_paypal");
+      var placeOrderBtn = document.getElementById("place-order-btn");
+      var paypalBtnContainer = document.getElementById("paypal-button-container");
+  
+      if (cashRadio.checked) {
+          placeOrderBtn.style.display = "block";
+          paypalBtnContainer.style.display = "none";
+      } else if (paypalRadio.checked) {
+          placeOrderBtn.style.display = "none";
+          paypalBtnContainer.style.display = "block";
+      }
+  }
+  </script>
+
+<script>
+
+</script>
 
      
 

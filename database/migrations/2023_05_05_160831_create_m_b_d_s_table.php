@@ -19,6 +19,11 @@ class CreateMBDSTable extends Migration
             $table->integer('productID');
             $table->string('compatibility');
             $table->integer('wattage');
+            $table->integer('formFactor');
+            $table->integer('ramSlots');
+            $table->integer('ramGen');
+           
+
     
         });
     }

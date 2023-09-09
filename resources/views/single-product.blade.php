@@ -5,7 +5,13 @@
 
 <div class="product-section section mt-90 mb-90">
     <div class="container ">
-        
+                    @php
+                    $product = $productData['product'];
+                    $discountedPrice = $productData['discountedPrice'];
+                    $discounted = $productData['discounted'];
+                    $start_date = $productData['start_date'];
+                    $end_date = $productData['end_date'];
+                    @endphp
         <div class="row mb-90 product">
                     
             <div class="col-lg-6 col-12 mb-50">
@@ -50,8 +56,11 @@
                             <h5 class="title" >{{$product->productName}}</h5>
                         </div>
 
-                        <h5 class="price " value="{{$product->productPrice}}">${{$product->productPrice}}</h5>
-
+                        @if ($discounted && $start_date <= now() && $end_date >= now())
+                        <h5 class="price"><span class="old"style="color: red">${{$product['productPrice']}} </span>${{$discountedPrice}}</h5>
+                        @else
+                        <h5 class="price">${{$product['productPrice']}}</h5>
+                        @endif
                     </div>
 
                     <div class="single-product-description">
@@ -103,13 +112,20 @@
                                 </div>
                               </div>
                             <div class="wishlist-compare">
-                                <a href="#" data-tooltip="Wishlist"><i class="ti-heart"></i></a>
+                                <a href="" data-tooltip="Wishlist" class="addToWhishlistBtn"><i class="ti-heart"></i></a>
                             </div>
                             @else
                             <h5 class="title" style="font-weight: 600;"> Email when product back in stock</h5>
                             <div style="display: flex; align-items: center;" class="ee-login">
-                                <input type="text" id="email" placeholder="Type your email address" class="form-control" name="email" autocomplete="email" autofocus="" style="width: 300px;">
+                                <input type="text" id="email" placeholder="Type your email address" class="form-control email-notify-input" name="email" autocomplete="email" autofocus="" style="width: 300px;">
                                 <input type="submit" class="stockbtn" value="SUBMIT">
+                                <div id="stockbtn-modal" class="modal">
+                                    <div class="modal-content">
+                                      <h2>Your email has been saved</h2>
+                                      <p>You will be notified once the product is on stock again.</p>
+                                      <span class="close-btn2 ">&times;</span>
+                                    </div>
+                                </div>
                             </div>
                             @endif
 
@@ -162,12 +178,8 @@
                         
                         <div class="row">
                             <div class="single-product-description-content col-lg-8 col-12">
-                                <h4>Introducing Flex 3310</h4>
-                                <p>enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia res eos qui ratione voluptatem sequi Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora in</p>
-                                <h4>Stylish Design</h4>
-                                <p>enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia res eos qui ratione voluptatem sequi Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci veli</p>
-                                <h4>Digital Camera, FM Radio & many more...</h4>
-                                <p>enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia res eos qui ratione voluptatem sequi Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci veli</p>
+                                <h4>Introducing {{$product->productName}}</h4>
+                                <p>{{$product->productDetails}}</p>
                             </div>
                            
                         </div>
@@ -385,15 +397,17 @@
                                 <a href="{{ route('single-product', ['id' => $i['id']]) }}" class="img"><img src="assets/images/uploads/{{$i['productImage']}}" alt="Product Image"></a>
 
                                 <div class="wishlist-compare">
-                                    <a href="" data-tooltip="Compare"><i class="ti-control-shuffle"></i></a>
-                                    <a href="" data-tooltip="Wishlist"><i class="ti-heart"></i></a>
+                                    
+                                    <a href="" data-tooltip="Wishlist" class="addToWhishlistBtn"><i class="ti-heart"></i></a>
                                 </div>
 
                                 <input type="hidden" class="product_id" value="{{$i->id}}">
                                 <input type="hidden" class="product_quantity" value="1">
 
                                 
-                                <a href="#" class="add-to-cart addToCartBtn"><i class="ti-shopping-cart "></i><span>ADD TO CART</span></a>
+                                @if ($i['productStock'] > 0)
+                                <a href="#" class="add-to-cart addToCartBtn"><i class="ti-shopping-cart update-cart"></i><span>ADD TO CART</span></a>  
+                                @endif
 
                             </div>
 
@@ -443,11 +457,32 @@
 <script src="assets/js/modal.js"></script>
 @endsection
 @section('scripts')
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
+    $(document).ready(function() {
+  const stockBtn = $(".stockbtn");
+  const stockBtnModal = $("#stockbtn-modal");
+  const closeBtn2 = $(".close-btn2");
 
+  // When the user clicks the stockbtn, show the stockbtn-modal
+  stockBtn.on("click", function() {
+    stockBtnModal.css("display", "block");
+  });
+
+  // When the user clicks the close button, hide the stockbtn-modal
+  closeBtn2.on("click", function() {
+    stockBtnModal.css("display", "none");
+  });
+
+  // When the user clicks anywhere outside the modal, hide the stockbtn-modal
+  $(window).on("click", function(event) {
+    if (event.target === stockBtnModal[0]) {
+      stockBtnModal.css("display", "none");
+    }
+  });
+});
 </script>
-
-            
 
 
 @endsection

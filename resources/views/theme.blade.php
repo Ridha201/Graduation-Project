@@ -6,7 +6,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>E&E - Electronics eCommerce Bootstrap5 HTML Template</title>
+    <title>BuildWise</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -18,6 +18,7 @@
    
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     
     <!-- Icon Font CSS -->
     <link rel="stylesheet" href="assets/css/icon-font.min.css">
@@ -30,6 +31,7 @@
     
     <!-- Modernizer JS -->
     <script src="assets/js/vendor/modernizr-2.8.3.min.js"></script>
+    
 </head>
 
 <body>
@@ -50,7 +52,7 @@
                 <div class="col mt-10 mb-10">
                     <!-- Header Links Start -->
                     <div class="header-links">
-                        <a href="track"><img src="assets/images/icons/car.png" alt="Car Icon"> <span>Track your order</span></a>
+                        <a href="mailto:info@example.com"><img src="assets/images/icons/envelope-line-icon.jpg" alt="Car Icon"> <span>Contact Us</span></a>
                    
                     </div><!-- Header Links End -->
                 </div>
@@ -79,15 +81,17 @@
                 <div class="col order-lg-2">
                     <!-- Header Shop Links Start -->
                     <div class="header-shop-links">
-                        <a href="wishlist.html" class="header-wishlist"><i class="ti-heart"></i> <span class="number">3</span></a>
+                        <a href="wishlist" class="header-wishlist"><i class="ti-heart"></i> <span class="number wishlist-count">0</span></a>
                         <!-- Cart -->
-                        <a href="cart" class="header-cart"><i class="ti-shopping-cart"></i> <span class="number cart-count">0</span></a>
+                        <a href="cart" class="header-cart "><i class="ti-shopping-cart"></i> <span class="number cart-count">0</span></a>
+                        
                     </div><!-- Header Shop Links End -->
                 </div>
 
                 <div class="col order-2 order-lg-12 mt-10 mb-10">
                     <!-- Header Account Links Start -->
                     @if (Auth::check())
+                    
                     <div class="user-dropdown">
                         <div class="btn " style="background-color : trasparent; border: 1px solid #ffffff; padding: 3px 10px;">Welcome, {{ explode(' ', Auth::user()->name)[0] }}!</div>
                         <ul class="user-dropdown-menu">
@@ -132,7 +136,7 @@
                         <!-- Category Menu -->
                         <nav class="category-menu">
                             <ul>
-                                <li class="menu-item-has-children"><a href="l">gaming pc</a>
+                                <li class="menu-item-has-children"><a href="">gaming pc</a>
                                     <ul class="sub-menu">
                                         <li><a href="{{ route('list.getProduct', ['productCategory' => 'pc']) }}">gaming pc</a></li>
                                         <li><a href="{{ route('list.getProduct', ['productCategory' => 'laptop']) }}">gaming laptop</a></li>
@@ -251,18 +255,7 @@
     <div class="footer-top-section section pt-90 pb-50">
         <div class="container">
            
-            <!-- Footer Widget Start -->
-            <div class="row">
-                <div class="col mb-90">
-                    <div class="footer-widget text-center">
-                        <div class="footer-logo">
-                            <img src="assets/images/logo.png" alt="E&E - Electronics eCommerce Bootstrap4 HTML Template">
-                            <img class="theme-dark" src="assets/images/logo-light.png" alt="E&E - Electronics eCommerce Bootstrap4 HTML Template">
-                        </div>
-                        <p>Electronics product actual teachings of  he great explorer of the truth, the malder of human happiness. No one rejects</p>
-                    </div>
-                </div>
-            </div><!-- Footer Widget End -->
+           
             
             <div class="row">
                 
@@ -274,19 +267,19 @@
                         
                         <p class="contact-info">
                             <span>Address</span>
-                            You address will be here <br>
-                             Lorem Ipsum text                        </p>
+                            Kelibia <br>
+                             Nabeul                     </p>
                         
                         <p class="contact-info">
                             <span>Phone</span>
-                            <a href="tel:01234567890">01234 567 890</a>
-                            <a href="tel:01234567891">01234 567 891</a>
+                            <a href="tel:01234567890">+216 72 00 00 00 </a>
+                            
                         </p>
                         
                         <p class="contact-info">
                             <span>Web</span>
-                            <a href="mailto:info@example.com">info@example.com</a>
-                            <a href="#">www.example.com</a>
+                            <a href="mailto:info@example.com">info@BuildWise.com</a>
+                            
                         </p>
                         
                     </div>
@@ -299,14 +292,9 @@
                         <h4 class="widget-title">CUSTOMER CARE</h4>
                         
                         <ul class="link-widget">
-                            <li><a href="#">About us</a></li>
-                            <li><a href="#">Features</a></li>
-                            <li><a href="#">My Account</a></li>
-                            <li><a href="#">Cart</a></li>
-                            <li><a href="#">Checkout</a></li>
-                            <li><a href="#">Wishlist</a></li>
-                            <li><a href="#">blog</a></li>
-                            <li><a href="#">Contact</a></li>
+                            <li><a href="about">About us</a></li>
+                            <li><a href="features">Features</a></li>
+                            <li><a href="contact">Contact</a></li>
                         </ul>
                         
                     </div>
@@ -320,13 +308,10 @@
                         
                         <ul class="link-widget">
                             <li><a href="#">Track your order</a></li>
-                            <li><a href="#">Locate Store</a></li>
-                            <li><a href="#">Online Support</a></li>
-                            <li><a href="#">Terms & Conditions</a></li>
-                            <li><a href="#">Payment</a></li>
-                            <li><a href="#">Shipping & Returns</a></li>
-                            <li><a href="#">Gift coupon</a></li>
-                            <li><a href="#">Special coupon</a></li>
+                            <li><a href="locate">Locate Store</a></li>
+                            <li><a href="terms">Terms & Conditions</a></li>
+                            
+                          
                         </ul>
                         
                     </div>
@@ -336,30 +321,24 @@
                 <div class="col-lg-3 col-md-6 col-12 mb-40">
                     <div class="footer-widget">
                        
-                        <h4 class="widget-title">LATEST NEWS</h4>
+                        <h4 class="widget-title">who are we ?</h4>
                         
                         <div class="footer-news">
                             <div class="sidebar-blog p-0 mb-4 border-0">
-                                <a href="#" class="image"><img class="opacity-100" src="assets/images/blog/sidebar-blog-1.jpg" alt="Sidebar Blog"></a>
+                                
                                 <div class="content">
-                                    <h5><a href="#">PS4 Play Station for playing games</a></h5>
-                                    <span>30 January 2022</span>
+                                    <p>
+                                        Passionate gamers with expertise in PC building.
+                                        We create exceptional gaming experiences through
+                                        custom builds and performance optimization. Stay
+                                        ahead with our gaming solutions. Elevate
+                                        your gaming journey with us.
+                                    </p>
+                                    
                                 </div>
                             </div>
-                            <div class="sidebar-blog p-0 mb-4 border-0">
-                                <a href="#" class="image"><img class="opacity-100" src="assets/images/blog/sidebar-blog-2.jpg" alt="Sidebar Blog"></a>
-                                <div class="content">
-                                    <h5><a href="#">Kitchen Appliances Toster</a></h5>
-                                    <span>26 January 2022</span>
-                                </div>
-                            </div>
-                            <div class="sidebar-blog p-0 mb-0 border-0">
-                                <a href="#" class="image"><img class="opacity-100" src="assets/images/blog/sidebar-blog-3.jpg" alt="Sidebar Blog"></a>
-                                <div class="content">
-                                    <h5><a href="#">Most Innovative Smartphone</a></h5>
-                                    <span>20 January 2022</span>
-                                </div>
-                            </div>
+                            
+                            
                         </div>
                         
                     </div>
@@ -377,7 +356,7 @@
                 
                 <!-- Footer Copyright -->
                 <div class="col-lg-6 col-12">
-                    <div class="footer-copyright"><p>&copy; Copyright, All Rights Reserved by <a href="#">E&E</a></p></div>
+                    <div class="footer-copyright"><p>&copy; Copyright, All Rights Reserved by <a href="#">Ridha & Rafaa </a></p></div>
                 </div>
                 
                 <!-- Footer Payment Support -->
@@ -410,6 +389,7 @@
 <!-- Main JS -->
 <script src="assets/js/main.js"></script>
 <script src="assets/js/modal.js"></script>
+
 
 </body>
 

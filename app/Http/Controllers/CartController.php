@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
+use App\Models\discount;
 
 class CartController extends Controller
 {
@@ -26,11 +27,17 @@ class CartController extends Controller
                 return response()->json(['status'=> 'updated ']);
             }
             else{
+            $discount = discount::where('productID', $product_id)->first();
             $cartitem = new Cart();
             $cartitem->productID = $product_id;
             $cartitem->userID = Auth::user()->id;
             $cartitem->ProductQuantity = $product_qte;
-            $cartitem->ProductPrice = $prod->productPrice;
+            if ($discount !== null && $discount->start_date <= now() && $discount->end_date >= now()){
+                $cartitem->ProductPrice = $prod->productPrice - ($prod->productPrice * $discount->discount_percentage / 100);
+            } else {
+                $cartitem->ProductPrice = $prod->productPrice;
+            }
+            
             $cartitem->ProductName = $prod->productName;
             $cartitem->ProductImage = $prod->productImage;
             $cartitem->save();
@@ -86,6 +93,29 @@ class CartController extends Controller
         $cart = Cart::where('productID', $product_id)->where('userID', Auth::user()->id)->first();
         $cart->delete();
         return response()->json(['status'=> 'deleted ']);
+    }
+
+    public function validateCart(Request $request){
+        $user = Auth::user();
+        $cart = Cart::where('userID', $user->id)->get();
+        
+        foreach($cart as $item){
+            $product = Product::find($item->productID);
+            $discount = discount::where('productID', $product->id)->first();
+            if($product->productStock < $item->productQuantity){
+                $item->productQuantity = $product->productStock;
+                $item->save();
+            }
+            if ( $discount !== null && $discount->start_date <= now() && $discount->end_date >= now()){
+                $item->ProductPrice = $product->productPrice - ($product->productPrice * $discount->discount_percentage / 100);
+                $item->save();
+            } else {
+                $item->ProductPrice = $product->productPrice;
+                $item->save();
+            }
+        }
+        return response()->json(['status'=> 'validated ']);
+        
     }
 
     

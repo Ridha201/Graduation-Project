@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateGPUSTable extends Migration
+class CreateDiscountsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class CreateGPUSTable extends Migration
      */
     public function up()
     {
-        Schema::create('g_p_u_s', function (Blueprint $table) {
+        Schema::create('discounts', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->integer('productID');
-            $table->integer('wattage');
-            $table->integer('formFactor');
+            $table->integer('discount_perentage');
+            $table->date('start_date');
+            $table->date('end_date');   
         });
     }
 
@@ -29,6 +30,6 @@ class CreateGPUSTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('g_p_u_s');
+        Schema::dropIfExists('discounts');
     }
 }

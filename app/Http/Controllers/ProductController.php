@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\product;
 use App\Models\Review;
+use App\Models\discount;
 
 
 class ProductController extends Controller{
@@ -15,22 +16,17 @@ class ProductController extends Controller{
         $sort = $request->sort;
         $show = $request->show;
         if ($name !== null) {
-            // if name is not null, set lastname to name
             $lastname = $name;
-            // store lastname in session
             $request->session()->put('lastname', $lastname);
         } else {
-            // if name is null, get the last stored lastname value from session
             $lastname = $request->session()->get('lastname', '');
         }
 
         if ($category !== null) {
-            // if name is not null, set lastname to name
             $lastcategory = $category;
-            // store lastname in session
             $request->session()->put('lastcategory', $lastcategory);
         } else {
-            // if name is null, get the last stored lastname value from session
+            
             $lastcategory = $request->session()->get('lastcategory', '');
         }
 
@@ -68,32 +64,98 @@ class ProductController extends Controller{
             } else {
                 $query->latest();
             }
-            if ($show == null) 
+            if ($show == null) {
                 $data = $query->paginate(8);
-            else 
+            } else {
                 $data = $query->paginate($show);
-
-       return view('list', ['donnee' => $data]);
-       
-
-      
+            }
+            
+            $products = $this->getDiscountedProducts($data);
+    return view('list', ['products' => $products , 'donnee' => $data]);
+    
     }
     public function bestSellersProducts(Request $request){
         $data = product::orderByDesc('productSoldTimes')->take(10)->get();
-        return view('welcome', ['donnee' => $data]);
-        
+        $arrivals = product::orderByDesc('created_at')->take(8)->get();
+        $arrivals = $this->getDiscountedProducts($arrivals);
+        $data = $this->getDiscountedProducts($data);
+        $bestdeals = discount::orderByDesc('discount_percentage')->take(6)->get();
+        $products = [];
+        foreach ($bestdeals as $discount) {
+        $product = Product::find($discount->productID);
+        if ($product) {
+        $discountedPrice = $product->productPrice - ($product->productPrice * $discount->discount_percentage / 100);
+        $discounted = true;
+
+        $products[] = [
+            'product' => $product,
+            'discountedPrice' => $discountedPrice,
+            'discounted' => $discounted,
+            'start_date' => $discount->start_date ?? null,
+            'end_date' => $discount->end_date ?? null,
+        ];
     }
-    public function newArrivalProducts(Request $request){
-        $data = product::orderByDesc('created_at')->take(10)->get();
-        return view('welcome', ['arrival' => $data]);
+    $upto = discount::orderByDesc('discount_percentage')->first();
+    $maxdate = discount::orderByDesc('end_date')->first();
+}
+
+        return view('welcome', ['bestselling' => $data,'arrivals' => $arrivals,'bestdeals' => $products,'upto' => $upto,'maxdate' => $maxdate]);
     }
-    public function show(Request $req){
-     $id = $req->id;
-     $product = product::query()->where('id', $id)->first();
-     $reviews = Review::query()->where('product_id', $id)->get();
-     $relatedproducts = product::query()->where('globalCategory', $product->globalCategory)->inRandomOrder()->take(10)->get();
-     return view('single-product', ['reviews' => $reviews ,'product' => $product , 'relatedproducts' => $relatedproducts]);
+  
+    public function show(Request $req)
+{
+    $id = $req->id;
+    $product = Product::query()->where('id', $id)->first();
+    $reviews = Review::query()->where('product_id', $id)->get();
+    $relatedproducts = Product::query()->where('globalCategory', $product->globalCategory)->inRandomOrder()->take(10)->get();
+
+    $discountedPrice = 0;
+    $discounted = false;
+
+    $discount = Discount::query()->where('productID', $product->id)->first();
+    if ($discount != null) {
+        $discountedPrice = $product->productPrice - ($product->productPrice * $discount->discount_percentage / 100);
+        $discounted = true;
     }
+
+    $productData = [
+        'product' => $product,
+        'discountedPrice' => $discountedPrice,
+        'discounted' => $discounted,
+        'start_date' => $discount ? $discount->start_date : null,
+        'end_date' => $discount ? $discount->end_date : null,
+    ];
+
+    return view('single-product', ['reviews' => $reviews, 'productData' => $productData, 'relatedproducts' => $relatedproducts]);
+}
+
+public function getDiscountedProducts($products)
+{
+    $discountedProducts = [];
+    
+    foreach ($products as $product) {
+        $discountedPrice = 0;
+        $discounted = false;
+    
+        $discount = discount::query()->where('productID', $product->id)->first();
+        if ($discount !== null) {
+            $discountedPrice = $product->productPrice - ($product->productPrice * $discount->discount_percentage / 100);
+            $discounted = true;
+        }
+    
+        $discountedProducts[] = [
+            'product' => $product,
+            'discountedPrice' => $discountedPrice,
+            'discounted' => $discounted,
+            'start_date' => $discount->start_date ?? null,
+            'end_date' => $discount->end_date ?? null,
+        ];
+    }
+    
+    return $discountedProducts;
+}
+
+
 
     
    

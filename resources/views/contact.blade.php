@@ -7,7 +7,7 @@
             <!-- Register -->
             <div class="col-md-2"></div>
             <div class="col-md-8 col-12 d-flex">
-                <div class="ee-register">
+                <div class="ee-register" style="margin-top: -113px;">
                     
                     <h3 style="font-size: 48px;  font-weight: bold">Contact Us</h3>
                     <h3>How we can help you today  ?</h3>

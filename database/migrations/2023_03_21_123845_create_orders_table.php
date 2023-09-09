@@ -25,6 +25,7 @@ class CreateOrdersTable extends Migration
             $table->string('zipcode');
             $table->string('ordernumber');
             $table->string('status');
+            $table->string('orderType');
             $table->string('message')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('phone');

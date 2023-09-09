@@ -418,30 +418,43 @@ $('.brand-slider').slick({
 ------------------------*/
 $('.product-view-mode a').on('click', function(e){
     e.preventDefault();
-    
     var shopProductWrap = $('.shop-product-wrap');
     var viewMode = $(this).data('target');
-    
-    // Remove active class from all view mode icons
     $('.product-view-mode a').removeClass('active');
-    
-    // Add active class to current view mode icon
     $(this).addClass('active');
-    
-    // Remove previous view mode class and add current view mode class to shop product wrap
     shopProductWrap.removeClass('grid list').addClass(viewMode);
-    
-    // Store current view mode in local storage
     localStorage.setItem('viewMode', viewMode);
 });
 
-// Set initial view mode based on local storage
+
 var viewMode = localStorage.getItem('viewMode');
 if (viewMode) {
     $('.product-view-mode a[data-target="' + viewMode + '"]').addClass('active');
     $('.shop-product-wrap').removeClass('grid list').addClass(viewMode);
 }
-
+$(document).ready(function() {
+    const stockBtn = $(".stockbtn");
+    const stockBtnModal = $("#stockbtn-modal");
+    const closeBtn2 = $(".close-btn2");
+    const emailInput = $(".email-notify-input");
+  
+ 
+    stockBtn.on("click", function() {
+      if (emailInput.val().trim() !== "") {
+        stockBtnModal.css("display", "block");
+      }
+    });
+  
+    closeBtn2.on("click", function() {
+      stockBtnModal.css("display", "none");
+    });
+  
+    $(window).on("click", function(event) {
+      if (event.target === stockBtnModal[0]) {
+        stockBtnModal.css("display", "none");
+      }
+    });
+  });
 
 
 
@@ -451,10 +464,8 @@ $(document).ready(function(){
         e.preventDefault();
 
         var product_id = $(this).closest('.product').find('.product_id').val();
-        var product_name = $(this).closest('.product').find('.product_name').val();
-        var product_price = $(this).closest('.product').find('.product_price').val();
-        var product_image = $(this).closest('.product').find('.product_image').val();
         var product_quantity = $(this).closest('.product').find('.product_quantity').val();
+       
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -471,7 +482,7 @@ $(document).ready(function(){
             success : function(response){
                
                 loadCart();
-                $('.cart-count').html(response.count); // Update cart count dynamically
+                $('.cart-count').html(response.count); 
             }
         });
     });
@@ -488,6 +499,67 @@ $(document).ready(function(){
 
     loadCart();
 });
+$(document).ready(function(){
+    $('.ti-shopping-cart, .checkout-btn').click(function(e){
+        
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            method : "POST",
+            url : "/validate-cart",
+            success : function(response){
+                
+            },
+             
+        });
+    });
+});
+
+$(document).ready(function(){
+    $('.addToWhishlistBtn').click(function(e){
+        e.preventDefault();
+        var product_id = $(this).closest('.product').find('.product_id').val();
+       
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            method : "POST",
+            url : "/add-to-wishlist",
+            data : {
+                'product_id' : product_id,
+                
+            },
+            success : function(response){
+               
+                loadWishlist();
+                $('.wishlist-count').html(response.count); 
+            }
+        });
+    });
+
+    function loadWishlist(){
+        $.ajax({
+            method : "GET",
+            url : "/load-wishlist-data",
+            success : function(response){
+                $('.wishlist-count').html(response.count);
+            }
+        });
+    }
+    loadWishlist();
+});
+
+
+
 $(document).ready(function(){
 function review () {
 
@@ -626,7 +698,7 @@ windows.resize(productTabFilterScreen);
 $('.add-to-cart').on('click', function(e){
     e.preventDefault();
     
-    var button = $(this); // store the button element in a variable
+    var button = $(this); 
     
     if(button.hasClass('added')){
         button.removeClass('added').find('i').removeClass('ti-check').addClass('ti-shopping-cart').siblings('span').text('add to cart'); 
@@ -636,7 +708,7 @@ $('.add-to-cart').on('click', function(e){
     
     setTimeout(function(){
         button.removeClass('added').find('i').removeClass('ti-check').addClass('ti-shopping-cart').siblings('span').text('add to cart'); 
-    }, 800); // reset the button after 2 seconds
+    }, 800); 
 });
 
 
@@ -808,7 +880,14 @@ $(document).ready(function() {
         $button.parent().find('input').val(newVal);
 
     });  
-});;
+});
+
+
+
+
+
+
+
 
 $(document).ready(function() {
     
@@ -820,7 +899,7 @@ $(document).ready(function() {
     $('#reset-compatibility-btn').click(function() {
        
         $('#empty-cpu').empty();
-        var deffault = '<div class="component-info"><img id="add-component-img" src="assets/images/cpu.png" width="100" height="100"><span class="smallname" id="add-component-name"></span><span class="price" id="add-component-price"></span><span id="add-component-wattage-input"></span><span id="add-component-brand-input"></span><span class="price" id="add-component-price-input"></span></div>';
+        var deffault = '<div class="component-info"><img id="add-component-img" src="assets/images/cpu.png" width="100" height="100"><span class="smallname" id="add-component-name"></span><span id="add-component-id"></span><span class="price" id="add-component-price"></span><span id="add-component-wattage-input"></span><span id="add-component-brand-input"></span><span class="price" id="add-component-price-input"></span></div>';
         $('#empty-cpu').append(deffault);
        
         var buttonHTML = '<button class="btn" id="add-cpu-btn" style="background-color: #e59053"><b>Add</b></button>';
@@ -843,7 +922,7 @@ $(document).ready(function() {
    function mbdReset() {
       $('#reset-mbd-compatibility-btn').click(function() {
         $('#empty-mbd').empty();
-        var deffault = '<div class="component-info"><span><img id="add-mbd-component-img" src="assets/images/mbd.png" width="100" height="100"></span><span class="smallname"id="add-mbd-component-name"></span><span class="price" id="add-mbd-component-price"></span><span id="add-mbd-component-wattage-input"></span><span id="add-mbd-component-compatibility-input"></span><span class="price" id="add-mbd-component-price-input"></span></div>';
+        var deffault = '<div class="component-info"><span><img id="add-mbd-component-img" src="assets/images/mbd.png" width="100" height="100"></span><span id="add-mbd-component-id"></span><span class="smallname"id="add-mbd-component-name"></span><span class="price" id="add-mbd-component-price"></span><span id="add-mbd-component-wattage-input"></span><span id="add-mbd-component-compatibility-input"><span id="add-mbd-component-mbdFormFactor-input"><span id="add-mbd-component-ramSlots-input"><span id="add-mbd-component-ramGen-input"></span><span class="price" id="add-mbd-component-price-input"></span><span id="add-mbd-component-maxSupportedRamFrequency-input"></span><span id="add-mbd-component-maxSupportedRamCapacity-input"></span></div>';
         $('#empty-mbd').append(deffault);
        
        
@@ -866,7 +945,7 @@ $(document).ready(function() {
     function gpuReset() {
         $('#reset-gpu-btn').click(function() {
           $('#empty-gpu').empty();
-          var deffault = '<div class="component-info"><span><img id="add-gpu-component-img" src="assets/images/gpu.png" width="100" height="100"></span><span class="smallname"id="add-gpu-component-name"></span><span class="price" id="add-gpu-component-price"></span><span id="add-gpu-component-wattage-input"></span><span class="price" id="add-gpu-component-price-input"></span></div>';
+          var deffault = '<div class="component-info"><span><img id="add-gpu-component-img" src="assets/images/gpu.png" width="100" height="100"></span><span id="add-mbd-component-id"></span><span id="add-gpu-component-id"></span><span class="smallname"id="add-gpu-component-name"></span><span class="price" id="add-gpu-component-price"></span><span id="add-gpu-component-wattage-input"></span><span id="add-gpu-component-gpuFormFactor-input"></span><span class="price" id="add-gpu-component-price-input"></span></div>';
           $('#empty-gpu').append(deffault);
           var buttonHTML = '<button class="btn" id="add-gpu-btn" style="background-color: #e59053"><b>Add</b></button>';
           $('#parent-element-id3').append(buttonHTML);
@@ -883,7 +962,7 @@ $(document).ready(function() {
       function ramReset() {
         $('#reset-ram-btn').click(function() {
           $('#empty-ram').empty();
-          var deffault = '<div class="component-info"><span><img id="add-ram-component-img" src="assets/images/ram.png"width="100" height="100"></span><span class="smallname"id="add-ram-component-name"></span><span class="price" id="add-ram-component-price"></span><span class="price" id="add-ram-component-price-input"></span></div>';
+          var deffault = '<div class="component-info"><span><img id="add-ram-component-img" src="assets/images/ram.png"width="100" height="100"></span><span id="add-ram-component-id"></span><span class="smallname"id="add-ram-component-name"></span><span class="price" id="add-ram-component-price"></span><span class="price" id="add-ram-component-price-input"></span><span id="add-ram-component-frequency-input"></span><span id="add-ram-component-capacity-input"></span><span id="add-ram-component-generation-input"></span><span id="add-ram-component-slots-input"></span></div>';
           $('#empty-ram').append(deffault);
           var buttonHTML = '<button class="btn" id="add-ram-btn" style="background-color: #e59053"><b>Add</b></button>';
           $('#parent-element-id4').append(buttonHTML);
@@ -899,7 +978,7 @@ $(document).ready(function() {
       function storageReset() {
           $('#reset-storage-btn').click(function() {
           $('#empty-storage').empty();
-          var deffault = '<div class="component-info"><span><img id="add-storage-component-img" src="assets/images/ssd.png" width="100" height="100"></span><span class="smallname"id="add-storage-component-name"></span><span class="price" id="add-storage-component-price"></span><span class="price" id="add-storage-component-price-input"></span></div>';
+          var deffault = '<div class="component-info"><span><img id="add-storage-component-img" src="assets/images/ssd.png" width="100" height="100"></span><span id="add-storage-component-id"></span><span class="smallname"id="add-storage-component-name"></span><span class="price" id="add-storage-component-price"></span><span class="price" id="add-storage-component-price-input"></span></div>';
           $('#empty-storage').append(deffault);
           var buttonHTML = '<button class="btn" id="add-storage-btn" style="background-color: #e59053"><b>Add</b></button>';
           $('#parent-element-id5').append(buttonHTML);
@@ -915,7 +994,7 @@ $(document).ready(function() {
       function coolingReset() {
         $('#reset-cooling-btn').click(function() {
           $('#empty-cooling').empty();
-          var deffault = '<div class="component-info"><span><img id="add-cooler-component-img" src="assets/images/cooler.png" width="100" height="100"></span><span class="smallname"id="add-cooler-component-name"></span><span class="price" id="add-cooler-component-price"></span><span class="price" id="add-cooler-component-price-input"></span></div>';
+          var deffault = '<div class="component-info"><span><img id="add-cooler-component-img" src="assets/images/cooler.png" width="100" height="100"></span><span id="add-cooler-component-id"></span><span class="smallname"id="add-cooler-component-name"></span><span class="price" id="add-cooler-component-price"></span><span class="price" id="add-cooler-component-price-input"></span></div>';
           $('#empty-cooling').append(deffault);
           var buttonHTML = '<button class="btn" id="add-cooling-btn" style="background-color: #e59053"><b>Add</b></button>';
           $('#parent-element-id6').append(buttonHTML);
@@ -931,7 +1010,7 @@ $(document).ready(function() {
       function caseReset() {
         $('#reset-case-btn').click(function() {
          $('#empty-case').empty();
-         var deffault = '<div class="component-info"><span><img id="add-case-component-img" src="assets/images/case.png" width="100" height="100"></span><span class="smallname"id="add-case-component-name"></span><span class="price" id="add-case-component-price"></span><span class="price" id="add-case-component-price-input"></span></div>';
+         var deffault = '<div class="component-info"><span><img id="add-case-component-img" src="assets/images/case.png" width="100" height="100"></span><span id="add-case-component-id"></span><span class="smallname"id="add-case-component-name"></span><span class="price" id="add-case-component-price"></span><span class="price" id="add-case-component-price-input"></span><span id="add-case-component-formFactor-input"></span></div>';
          $('#empty-case').append(deffault);
           var buttonHTML = '<button class="btn" id="add-case-btn" style="background-color: #e59053"><b>Add</b></button>';
           $('#parent-element-id7').append(buttonHTML);
@@ -947,7 +1026,7 @@ $(document).ready(function() {
       function psuReset() {
         $('#reset-psu-btn').click(function() {
           $('#empty-psu').empty();
-          var deffault = '<div class="component-info"><span><img id="add-psu-component-img" src="assets/images/psu.png"width="100" height="100"></span><span class="smallname"id="add-psu-component-name"></span><span class="price" id="add-psu-component-price"></span><span class="price" id="add-psu-component-price-input"></span></div>';
+          var deffault = '<div class="component-info"><span><img id="add-psu-component-img" src="assets/images/psu.png"width="100" height="100"></span><span id="add-psu-component-id"></span><span class="smallname"id="add-psu-component-name"></span><span class="price" id="add-psu-component-price"></span><span class="price" id="add-psu-component-price-input"></span></div>';
           $('#empty-psu').append(deffault);
           var buttonHTML = '<button class="btn" id="add-psu-btn" style="background-color: #e59053"><b>Add</b></button>';
           $('#parent-element-id8').append(buttonHTML);
@@ -974,7 +1053,7 @@ function getCPU() {
     $('#add-cpu-btn').click(function() {
         $("#myModal").show();
         $('#add-component-btn').html('Add CPU');
-        $('#add-component-img').attr('src', '');
+        $('#add-component-img').attr('src', 'assets/images/cpu.png');
         $('#add-component-name').text('');
         $('#add-component-wattage').text('');
         $('#add-component-brand').text('');
@@ -995,7 +1074,7 @@ function getCPU() {
             for (var i = 0; i < response.length; i++) {
               var product = response[i];
               var html = '<tr class="product" data-id="' + product.id + '" data-brand="' + product.brand + '" data-wattage="' + product.wattage + '" data-price="' + product.productPrice +'">' +
-                '<td><img src="assets/images/uploads/' + product.productImage + '" width="100" height="100"></td>' +
+                '<td><img src="assets/images/uploads/' + product.productImage + '" width="120" height="120"></td>' +
                 '<td>' + product.productName + '</td>' +
                 '<td>$' + product.productPrice + '</td>' +
               '</tr>'
@@ -1025,14 +1104,11 @@ function getCPU() {
             $('#parent-element-id').append(buttonHTML);
             $(document).off('click', '#reset-compatibility-btn');
             cpuReset();
-        
-
-            
             $('#add-component-wattage-input').val(wattage);
             $('#add-cpu-btn').remove();
             $('#add-component-brand-input').val(brand);
             $('#add-component-price-input').val(priceInput);
-            
+            $('#add-component-id').val(id);
             $("#myModal").hide();
             calculateEstimatedWattage();
             calculateBuildPrice();
@@ -1047,11 +1123,22 @@ function getMBD() {
       $('#add-mbd-btn').click(function() {
         $("#myModal").show();
         var productClassDataBrand = $('#add-component-brand-input').val();
+        var productClassDataFrequency = $('#add-ram-component-frequency-input').val();
+        var productClassDataCapacity = $('#add-ram-component-capacity-input').val();
+        var productClassDataRamGen = $('#add-ram-component-generation-input').val();
+        var productClassDataRamSlots = $('#add-ram-component-slots-input').val();
+        var productClassDataFormFactor = $('#add-case-component-formFactor-input').val();
+      
+
+
         $('#add-mbd-component-btn').html('Add mbd');
         $('#add-mbd-component-img').attr('src', '');
         $('#add-mbd-component-name').text('');
         $('#add-mbd-component-wattage').text('');
         $('#add-mbd-component-compatibility').text('');
+        $('#add-mbd-component-ramSlots').text('');
+        $('#add-mbd-component-ramGen').text('');
+        $('#add-mbd-component-mbdFormFactor').text('');
         $.ajaxSetup({
           headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -1061,33 +1148,67 @@ function getMBD() {
         $.ajax({
           url: 'get-mbd',
           method: 'GET',
-          data : {brand : productClassDataBrand},
+          data : {brand : productClassDataBrand, frequency : productClassDataFrequency, capacity : productClassDataCapacity, generation : productClassDataRamGen, slots : productClassDataRamSlots, caseFormFactor : productClassDataFormFactor},
           success: function(response) {
             $('#myModal .modal-body tbody').empty();
             for (var i = 0; i < response.length; i++) {
               var product = response[i];
-              var html = '<tr class="mbdProduct" data-id="' + product.id + '" data-compatibility="' + product.compatibility +  '" data-wattage="' + product.wattage + '" data-price="' + product.productPrice +'">' +
-                '<td><img src="assets/images/uploads/' + product.productImage + '" width="100" height="100"></td>' +
-                '<td>' + product.productName + '</td>' +
+              
+            if(product.freqexcced == true && product.capexcced == true){
+                
+                var html = '<tr class="mbdProduct" data-id="' + product.id + '" data-compatibility="' + product.compatibility +  '" data-wattage="' + product.wattage + '" data-price="' + product.productPrice + '" data-mbdformfactor="' + product.mbdFormFactor + '" data-ramslots="' + product.ramSlots + '" data-ramgen="' + product.ramGen + '" data-maxsupportedfreq="' + product.maxSupportedRamFrequency + '" data-maxsupportedcapacity="' + product.maxSupportedRamCapacity +'">'  +
+                '<td><img src="assets/images/uploads/' + product.productImage + '" width="120" height="120"></td>' +
+                '<td><span>' + product.productName + ' </span><br><label><div class="alert error"><span class="alertText">Downclocking limitation: Please keep in mind that only ' + product.maxSupportedRamFrequency+ 'MHz will be used from ' + productClassDataFrequency+ 'MHZ selected RAM.</span> </div></label><label><div class="alert error"><span class="alertText">Unused memory: Please keep in mind that only ' + product.maxSupportedRamCapacity  + 'GB will be used from ' +  productClassDataCapacity+ 'GB selected RAM.</span> </div></label></td>' +
                 '<td>$' + product.productPrice + '</td>' +
               '</tr>'
+            }else if(product.freqexcced == true && product.capexcced == false){
+                var html = '<tr class="mbdProduct" data-id="' + product.id + '" data-compatibility="' + product.compatibility +  '" data-wattage="' + product.wattage + '" data-price="' + product.productPrice + '" data-mbdformfactor="' + product.mbdFormFactor + '" data-ramslots="' + product.ramSlots + '" data-ramgen="' + product.ramGen + '" data-maxsupportedfreq="' + product.maxSupportedRamFrequency + '" data-maxsupportedcapacity="' + product.maxSupportedRamCapacity +'">'  +
+                '<td><img src="assets/images/uploads/' + product.productImage + '" width="120" height="120"></td>' +
+                '<td><span>' + product.productName + ' </span><br><label><div class="alert error"><span class="alertText">Downclocking limitation: Please keep in mind that only ' + product.maxSupportedRamFrequency+ 'MHz will be used from ' + productClassDataFrequency+ 'MHZ selected RAM.</span> </div></label></td>' +
+                '<td>$' + product.productPrice + '</td>' +
+              '</tr>'
+                
+                
+               
+            }else if(product.freqexcced == false && product.capexcced == true){
+                var html = '<tr class="mbdProduct" data-id="' + product.id + '" data-compatibility="' + product.compatibility +  '" data-wattage="' + product.wattage + '" data-price="' + product.productPrice + '" data-mbdformfactor="' + product.mbdFormFactor + '" data-ramslots="' + product.ramSlots + '" data-ramgen="' + product.ramGen + '" data-maxsupportedfreq="' + product.maxSupportedRamFrequency + '" data-maxsupportedcapacity="' + product.maxSupportedRamCapacity +'">'  +
+                '<td><img src="assets/images/uploads/' + product.productImage + '" width="120" height="120"></td>' +
+                '<td><span>' + product.productName + ' </span><br><label><div class="alert error"><span class="alertText">Unused memory: Please keep in mind that only ' + product.maxSupportedRamCapacity  + 'GB will be used from ' +  productClassDataCapacity+ 'GB selected RAM.</span> </div></label></td>' +
+                '<td>$' + product.productPrice + '</td>' +
+              '</tr>'
+                
+            }else{
+                var html = '<tr class="mbdProduct" data-id="' + product.id + '" data-compatibility="' + product.compatibility +  '" data-wattage="' + product.wattage + '" data-price="' + product.productPrice + '" data-mbdformfactor="' + product.mbdFormFactor + '" data-ramslots="' + product.ramSlots + '" data-ramgen="' + product.ramGen + '" data-maxsupportedfreq="' + product.maxSupportedRamFrequency + '" data-maxsupportedcapacity="' + product.maxSupportedRamCapacity +'">'  +
+                '<td><img src="assets/images/uploads/' + product.productImage + '" width="120" height="120"></td>' +
+                '<td><span>' + product.productName + ' </span></td>' +
+                '<td>$' + product.productPrice + '</td>' +
+              '</tr>'
+            }
               $('#myModal .modal-body tbody').append(html);
             
             }
             
           },
           error: function() {
-            alert('Error fetching CPU products.');
+            alert('Error fetching motherboards products.');
           }
         });
         $(document).on('click', '#myModal .modal-body .mbdProduct', function() {
             var id = $(this).data('id');
             var wattage = $(this).data('wattage');
-            var name = $(this).find('td:eq(1)').text();
+            var name = $(this).find('td:eq(1) span:first').text();
             var img = $(this).find('img').attr('src');
             var price = $(this).find('td:eq(2)').text();
             var compatibility = $(this).data('compatibility');
             var priceInput = $(this).data('price');
+            var mbdFormFactor = $(this).data('mbdformfactor');
+            var ramSlots = $(this).data('ramslots');
+            var ramGen = $(this).data('ramgen');
+            var maxSupportedRamFrequency = $(this).data('maxsupportedfreq');
+            var maxSupportedRamCapacity = $(this).data('maxsupportedcapacity');
+       
+            
+            
           
             $('#add-component-btn').html('<img src="' + img + '" width="100" height="100"> ' + name);
             $('#add-mbd-component-img').attr('src', img);
@@ -1102,7 +1223,12 @@ function getMBD() {
             $('#add-mbd-component-wattage-input').val(wattage);
             $('#add-mbd-component-compatibility-input').val(compatibility);
             $('#add-mbd-component-price-input').val(priceInput);
-            
+            $('#add-mbd-component-mbdFormFactor-input').val(mbdFormFactor);
+            $('#add-mbd-component-ramSlots-input').val(ramSlots);
+            $('#add-mbd-component-ramGen-input').val(ramGen);
+            $('#add-mbd-component-maxSupportedRamFrequency-input').val(maxSupportedRamFrequency);
+            $('#add-mbd-component-maxSupportedRamCapacity-input').val(maxSupportedRamCapacity);
+            $('#add-mbd-component-id').val(id);
             $("#myModal").hide();
             calculateEstimatedWattage();
             calculateBuildPrice();
@@ -1111,17 +1237,16 @@ function getMBD() {
     }
     getMBD();
       
-      
-      // When a product is clicked, update the Add Component button with the product information and hide the modal
-      
-
 function getGPU() {
       $('#add-gpu-btn').click(function() {
         $("#myModal").show();
+        var productClassDataformFactor = $('#add-case-component-formFactor-input').val();
+       
         $('#add-gpu-component-btn').html('Add GPU');
         $('#add-gpu-component-img').attr('src', '');
         $('#add-gpu-component-name').text('');
         $('#add-gpu-component-wattage').text('');
+        $('#add-gpu-component-gpuFormFactor').text('');
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -1130,12 +1255,13 @@ function getGPU() {
         $.ajax({
           url: 'get-gpu',
           method: 'GET',
+          data: {formFactor : productClassDataformFactor},
           success: function(response) {
             $('#myModal .modal-body tbody').empty();
             for (var i = 0; i < response.length; i++) {
               var product = response[i];
-              var html = '<tr class="gpuProduct" data-id="' + product.id + '" data-wattage="' + product.wattage + '" data-price="' + product.productPrice +'">' +
-                           '<td><img src="assets/images/uploads/' + product.productImage + '" + width="100"+ height="100"></td>' +
+              var html = '<tr class="gpuProduct" data-id="' + product.id + '" data-wattage="' + product.wattage + '" data-price="' + product.productPrice  + '" data-gpuformfactor="' + product.gpuFormFactor +'">' +
+                           '<td><img src="assets/images/uploads/' + product.productImage + '" + width="120" height="120"></td>' +
                            '<td>' + product.productName + '</td>' +
                            '<td>$' + product.productPrice + '</td>' +
                          '</tr>';
@@ -1153,6 +1279,7 @@ function getGPU() {
             var img = $(this).find('img').attr('src');
             var price = $(this).find('td:eq(2)').text();
             var priceInput = $(this).data('price');
+            var gpuFormFactor = $(this).data('gpuformfactor');
           
             $('#add-gpu-component-btn').html('<img src="' + img + '" width="100" height="100"> ' + name);
             $('#add-gpu-component-img').attr('src', img);
@@ -1166,6 +1293,8 @@ function getGPU() {
             $('#add-gpu-component-price').text(price);
             $('#add-gpu-component-wattage-input').val(wattage);
             $('#add-gpu-component-price-input').val(priceInput);
+            $('#add-gpu-component-gpuFormFactor-input').val(gpuFormFactor);
+            $('#add-gpu-component-id').val(id);
             $("#myModal").hide();
             calculateEstimatedWattage();
             calculateBuildPrice();
@@ -1176,6 +1305,11 @@ function getGPU() {
 function getRAM() {
       $('#add-ram-btn').click(function() {
         $("#myModal").show();
+        var productClassDataRamSlots = $('#add-mbd-component-ramSlots-input').val();
+        var productClassDataRamGen = $('#add-mbd-component-ramGen-input').val();
+        var productClassDataRamFrequency = $('#add-mbd-component-maxSupportedRamFrequency-input').val();
+        var productClassDataRamCapacity = $('#add-mbd-component-maxSupportedRamCapacity-input').val();
+        
         $('#add-ram-component-btn').html('Add RAM');
         $('#add-ram-component-img').attr('src', '');
         $('#add-ram-component-name').text('');
@@ -1187,15 +1321,39 @@ function getRAM() {
         $.ajax({
           url: 'get-ram',
           method: 'GET',
+          data: {Slots : productClassDataRamSlots, Generation : productClassDataRamGen, Frequency : productClassDataRamFrequency, Capacity : productClassDataRamCapacity},
           success: function(response) {
             $('#myModal .modal-body tbody').empty();
             for (var i = 0; i < response.length; i++) {
               var product = response[i];
-              var html = '<tr class="ramProduct " data-price="' + product.productPrice +'">' +
-                           '<td><img src="assets/images/uploads/' + product.productImage + '" + width="100"+ height="100"></td>' +
-                           '<td>' + product.productName + '</td>' +
+              if (product.freqtest == true && product.captest == true) {
+                var html = '<tr class="ramProduct" data-id="' + product.id + '" data-price="' + product.productPrice  + '" data-frequency="' + product.frequency + '" data-capacity="' + product.capacity +'" data-generation="' + product.generation +'" data-slots="' + product.slots + '">' +
+                           '<td><img src="assets/images/uploads/' + product.productImage + '" + width="120" height="120"></td>' +
+                           '<td><span>' + product.productName + '</span><br><label><div class="alert error"><span class="alertText">Downclocking limitation: Please keep in mind that only ' + productClassDataRamFrequency + 'MHz will be used from ' + product.frequency+ 'MHZ on the selected motherboard.</span> </div></label><label><div class="alert error"><span class="alertText">Unused memory: Please keep in mind that only ' + product.capacity  + 'GB will be used from ' +  productClassDataRamCapacity+ 'GB one the selected motherboard.</span> </div></label></td>' +
                            '<td>$' + product.productPrice + '</td>' +
                          '</tr>';
+
+              }else if (product.freqtest == true && product.captest == false) {
+                var html = '<tr class="ramProduct" data-id="' + product.id + '" data-price="' + product.productPrice  + '" data-frequency="' + product.frequency + '" data-capacity="' + product.capacity +'" data-generation="' + product.generation +'" data-slots="' + product.slots + '">' +
+                           '<td><img src="assets/images/uploads/' + product.productImage + '" + width="120" height="120"></td>' +
+                           '<td><span>' + product.productName + '</span><br><label><div class="alert error"><span class="alertText">Downclocking limitation: Please keep in mind that only ' + productClassDataRamFrequency + 'MHz will be used from ' + product.frequency+ 'MHZ on the selected motherboard.</span> </div></label></td>' +
+                           '<td>$' + product.productPrice + '</td>' +
+                         '</tr>';
+                
+              }else if (product.freqtest == false && product.captest == true) {
+                var html = '<tr class="ramProduct" data-id="' + product.id + '" data-price="' + product.productPrice  + '" data-frequency="' + product.frequency + '" data-capacity="' + product.capacity +'" data-generation="' + product.generation +'" data-slots="' + product.slots + '">' +
+                           '<td><img src="assets/images/uploads/' + product.productImage + '" + width="120" height="120"></td>' +
+                           '<td><span>' + product.productName + '</span><br><label><div class="alert error"><span class="alertText">Unused memory: Please keep in mind that only ' + product.capacity  + 'GB will be used from ' +  productClassDataRamCapacity+ 'GB one the selected motherboard.</span> </div></label></td>' +
+                           '<td>$' + product.productPrice + '</td>' +
+                         '</tr>';
+                
+              }else {
+              var html = '<tr class="ramProduct" data-id="' + product.id + '" data-price="' + product.productPrice  + '" data-frequency="' + product.frequency + '" data-capacity="' + product.capacity +'" data-generation="' + product.generation +'" data-slots="' + product.slots + '">' +
+                           '<td><img src="assets/images/uploads/' + product.productImage + '" + width="120" height="120"></td>' +
+                           '<td><span>' + product.productName + '</span></td>' +
+                           '<td>$' + product.productPrice + '</td>' +
+                         '</tr>';
+                }
               $('#myModal .modal-body tbody').append(html);
             }
           },
@@ -1205,10 +1363,15 @@ function getRAM() {
         });
         $(document).on('click', '#myModal .modal-body .ramProduct', function() {
             var id = $(this).data('id');
-            var name = $(this).find('td:eq(1)').text();
+            var name = $(this).find('td:eq(1) span:first').text();
             var img = $(this).find('img').attr('src');
             var price = $(this).find('td:eq(2)').text();
             var priceInput = $(this).data('price');
+            var frequency = $(this).data('frequency');
+            var capacity = $(this).data('capacity');
+            var generation = $(this).data('generation');
+            var slots = $(this).data('slots');
+           
           
             $('#add-ram-component-btn').html('<img src="' + img + '" width="100" height="100"> ' + name);
             $('#add-ram-component-img').attr('src', img);
@@ -1221,6 +1384,11 @@ function getRAM() {
             $('#add-ram-component-name').text(name);
             $('#add-ram-component-price').text(price);
             $('#add-ram-component-price-input').val(priceInput);
+            $('#add-ram-component-frequency-input').val(frequency);
+            $('#add-ram-component-capacity-input').val(capacity);
+            $('#add-ram-component-generation-input').val(generation);
+            $('#add-ram-component-slots-input').val(slots);
+            $('#add-ram-component-id').val(id);
             $("#myModal").hide();
             calculateBuildPrice();
             
@@ -1246,8 +1414,8 @@ function getStorage() {
             $('#myModal .modal-body tbody').empty();
             for (var i = 0; i < response.length; i++) {
               var product = response[i];
-              var html = '<tr class="storageProduct" data-price="' + product.productPrice +'">' +
-                           '<td><img src="assets/images/uploads/' + product.productImage + '" + width="100"+ height="100"></td>' +
+              var html = '<tr class="storageProduct"  data-id="' + product.id + '" data-price="' + product.productPrice+'">' +
+                           '<td><img src="assets/images/uploads/' + product.productImage + '" + width="120" height="120"></td>' +
                            '<td>' + product.productName + '</td>' +
                            '<td>$' + product.productPrice + '</td>' +
                          '</tr>';
@@ -1265,7 +1433,7 @@ function getStorage() {
             var price = $(this).find('td:eq(2)').text();
             var priceInput = $(this).data('price');
           
-            $('#add-storage-component-btn').html('<img src="' + img + '" width="100" height="100"> ' + name);
+            $('#add-storage-component-btn').html('<img src="' + img + '" width="120" height="120"> ' + name);
             $('#add-storage-component-img').attr('src', img);
             $('#add-storage-btn').remove();
             $('#reset-storage-btn').remove();
@@ -1276,6 +1444,7 @@ function getStorage() {
             $('#add-storage-component-name').text(name);
             $('#add-storage-component-price').text(price);
             $('#add-storage-component-price-input').val(priceInput);
+            $('#add-storage-component-id').val(id);
             $("#myModal").hide();
             calculateBuildPrice();
             
@@ -1287,6 +1456,10 @@ function getCase() {
 
       $('#add-case-btn').click(function() {
         $("#myModal").show();
+        var productClassDataMbdFormFactor = $('#add-mbd-component-mbdFormFactor-input').val();
+        var productClassDataGpuFormFactor = $('#add-gpu-component-gpuFormFactor-input').val();
+        
+
         $('#add-case-component-btn').html('Add case');
         $('#add-case-component-img').attr('src', '');
         $('#add-case-component-name').text('');
@@ -1298,12 +1471,13 @@ function getCase() {
         $.ajax({
           url: 'get-casing',
           method: 'GET',
+          data: {MbdFormFactor :  productClassDataMbdFormFactor , GpuFormFactor : productClassDataGpuFormFactor},
           success: function(response) {
             $('#myModal .modal-body tbody').empty();
             for (var i = 0; i < response.length; i++) {
               var product = response[i];
-              var html = '<tr class="caseProduct" data-price="' + product.productPrice +'">' +
-                           '<td><img src="assets/images/uploads/' + product.productImage + '" + width="100"+ height="100"></td>' +
+              var html = '<tr class="caseProduct" data-id="' + product.id + '" data-price="' + product.productPrice+'" data-formfactor="' + product.formFactor+'">' +
+                           '<td><img src="assets/images/uploads/' + product.productImage + '" + width="120" height="120"></td>' +
                            '<td>' + product.productName + '</td>' +
                            '<td>$' + product.productPrice + '</td>' +
                          '</tr>';
@@ -1320,8 +1494,10 @@ function getCase() {
             var img = $(this).find('img').attr('src');
             var price = $(this).find('td:eq(2)').text();
             var priceInput = $(this).data('price');
+            var formFactor = $(this).data('formfactor');
+            
           
-            $('#add-case-component-btn').html('<img src="' + img + '" width="100" height="100"> ' + name);
+            $('#add-case-component-btn').html('<img src="' + img + '" width="120" height="120"> ' + name);
             $('#add-case-component-img').attr('src', img);
             $('#add-case-btn').remove();
             $('#reset-case-btn').remove();
@@ -1332,6 +1508,8 @@ function getCase() {
             $('#add-case-component-name').text(name);
             $('#add-case-component-price').text(price);
             $('#add-case-component-price-input').val(priceInput);
+            $('#add-case-component-formFactor-input').val(formFactor);
+            $('#add-case-component-id').val(id);
             $("#myModal").hide();
             calculateBuildPrice();
             
@@ -1358,7 +1536,7 @@ function getCooling() {
             $('#myModal .modal-body tbody').empty();
             for (var i = 0; i < response.length; i++) {
               var product = response[i];
-              var html = '<tr class="coolerProduct" data-price="' + product.productPrice +'">' +
+              var html = '<tr class="coolerProduct" data-id="' + product.id + '" data-price="' + product.productPrice+'">' +
                            '<td><img src="assets/images/uploads/' + product.productImage + '" + width="100"+ height="100"></td>' +
                            '<td>' + product.productName + '</td>' +
                            '<td>$' + product.productPrice + '</td>' +
@@ -1378,7 +1556,7 @@ function getCooling() {
             var price = $(this).find('td:eq(2)').text();
             var priceInput = $(this).data('price');
           
-            $('#add-cooler-component-btn').html('<img src="' + img + '" width="100" height="100"> ' + name);
+            $('#add-cooler-component-btn').html('<img src="' + img + '" width="120" height="120"> ' + name);
             $('#add-cooler-component-img').attr('src', img);
             $('#add-cooling-btn').remove();
             $('#reset-cooling-btn').remove();
@@ -1389,6 +1567,7 @@ function getCooling() {
             $('#add-cooler-component-name').text(name);
             $('#add-cooler-component-price').text(price);
             $('#add-cooler-component-price-input').val(priceInput);
+            $('#add-cooler-component-id').val(id);
             
             $("#myModal").hide();
             calculateBuildPrice();
@@ -1425,8 +1604,8 @@ function getCooling() {
             $('#myModal .modal-body tbody').empty();
             for (var i = 0; i < response.length; i++) {
                 var product = response[i];
-                var html = '<tr class="psuProduct" data-price="' + product.productPrice +'">' +
-                             '<td> <img src="assets/images/uploads/' + product.productImage + '" width="100" height="100"></td>' +
+                var html = '<tr class="psuProduct" data-id="' + product.id + '" data-price="' + product.productPrice+'">' +
+                             '<td> <img src="assets/images/uploads/' + product.productImage + '"width="120" height="120"></td>' +
                              '<td>' + product.productName + '</td>' +
                              '<td> $' + product.productPrice + '</td>' +
                            '</tr>';
@@ -1456,6 +1635,7 @@ function getCooling() {
             $('#add-psu-component-name').text(name);
             $('#add-psu-component-price').text(price);
             $('#add-psu-component-price-input').val(priceInput);
+            $('#add-psu-component-id').val(id);
             $("#myModal").hide();
             calculateBuildPrice();
             
@@ -1476,22 +1656,13 @@ function getCooling() {
   });
 
   function calculateEstimatedWattage() {
-    // Get the wattage inputs from the selected components
     var cpuWattageInput = $('#add-component-wattage-input').val();
     var gpuWattageInput = $('#add-gpu-component-wattage-input').val();
     var mbdWattageInput = $('#add-mbd-component-wattage-input').val();
-  
-    // Validate and parse the wattage inputs
     var cpuWattage = validateAndParseWattage(cpuWattageInput);
     var gpuWattage = validateAndParseWattage(gpuWattageInput);
     var mbdWattage = validateAndParseWattage(mbdWattageInput);
-   
-  
-    // Calculate the total wattage
     var totalWattage = cpuWattage + gpuWattage +mbdWattage;
-    
-  
-    // Display the estimated wattage or show an error message if NaN
     if (!isNaN(totalWattage)) {
       $('.estimated-wattage-needed').text('~ '+totalWattage+'W');
     } else {
@@ -1500,25 +1671,20 @@ function getCooling() {
   }
   
   function validateAndParseWattage(wattageInput) {
-    // Remove leading/trailing white spaces and check if the value is empty
     if (wattageInput.trim() === '') {
-      return 0; // Return 0 for empty input
+      return 0; 
     }
-  
-    // Parse the value as an integer
     var wattage = parseInt(wattageInput);
-  
-    // Check if the parsed value is a valid number
     if (!isNaN(wattage)) {
       return wattage;
     } else {
-      return 0; // Return 0 for invalid input
+      return 0; 
     }
   }
 
 
   function calculateBuildPrice() {
-    // Get the wattage inputs from the selected components
+
     var cpuPriceInput = $('#add-component-price-input').val();
     var gpuPriceInput = $('#add-gpu-component-price-input').val();
     var mbdPriceInput = $('#add-mbd-component-price-input').val();
@@ -1527,11 +1693,6 @@ function getCooling() {
     var psuPriceInput = $('#add-psu-component-price-input').val();
     var coolerPriceInput = $('#add-cooler-component-price-input').val();
     var casePriceInput = $('#add-case-component-price-input').val();
-    
-
-
-  
-    // Validate and parse the wattage inputs
     var cpuPrice = validateAndParsePrice(cpuPriceInput);
     var gpuPrice = validateAndParsePrice(gpuPriceInput);
     var mbdPrice = validateAndParsePrice(mbdPriceInput);
@@ -1540,39 +1701,82 @@ function getCooling() {
     var psuPrice = validateAndParsePrice(psuPriceInput);
     var coolerPrice = validateAndParsePrice(coolerPriceInput);
     var casePrice = validateAndParsePrice(casePriceInput);
-
-
-   
-  
-    // Calculate the total wattage
     var totalPrice = cpuPrice + gpuPrice +mbdPrice + ramPrice + storagePrice + psuPrice + coolerPrice + casePrice;
-    
-    
-  
-    // Display the estimated wattage or show an error message if NaN
     if (!isNaN(totalPrice)) {
       $('.total-pc-build-price').text('$'+totalPrice);
+      $('#total-pc-build-price').val(totalPrice);
+
     } else {
       $('.total-pc-build-price').text('Invalid input');
     }
   }
   
   function validateAndParsePrice(priceInput) {
-    // Remove leading/trailing white spaces and check if the value is empty
     if (priceInput.trim() === '') {
-      return 0; // Return 0 for empty input
+      return 0; 
     }
-  
-    // Parse the value as an integer
     var price = parseInt(priceInput);
-  
-    // Check if the parsed value is a valid number
     if (!isNaN(price)) {
       return price;
     } else {
-      return 0; // Return 0 for invalid input
+      return 0; 
     }
   }
+
+  $(document).ready(function(){
+    $('.ondelivery').click(function(e){ 
+            var name = $('.name').val();
+            var lastname = $('.lastname').val();
+            var email = $('.email').val();
+            var phone = $('.phone').val();
+            var address1 = $('.address1').val();
+            var address2 = $('.address2').val();
+            var state = $('.state').val();
+            var zipcode = $('.zipcode').val();
+            var cpu = $('#add-component-id').val();
+            var gpu = $('#add-gpu-component-id').val();
+            var ram = $('#add-ram-component-id').val();
+            var mbd = $('#add-mbd-component-id').val();
+            var psu = $('#add-psu-component-id').val();
+            var storage = $('#add-storage-component-id').val();
+            var pccase = $('#add-case-component-id').val();
+            var cooler = $('#add-cooler-component-id').val();
+            var total = $('#total-pc-build-price').val();
+            var type = 'ondelivery';
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $.ajax({
+            method : "POST",
+            url : "/pc-builder-order",
+            data : {
+                        'name': name,
+                        'lastname': lastname,
+                        'email': email,
+                        'phone': phone,
+                        'address1': address1,
+                        'address2': address2,
+                        'state': state,
+                        'zipcode': zipcode,
+                        'cpu': cpu,
+                        'gpu': gpu,
+                        'ram': ram,
+                        'mbd': mbd,
+                        'psu': psu,
+                        'storage': storage,
+                        'case': pccase,
+                        'cooler': cooler,
+                        'type': type,
+            },
+            success : function(response){
+              window.location.href = "/emailsent";
+            }
+        });
+  });
+});
 
 
 
@@ -1690,7 +1894,7 @@ $(document).ready(function(){
             
         }
     });
-//end of checkout page count total price
+
     $('.delete-from-cart').click(function(e){
         e.preventDefault();
         var product_id = $(this).closest('[data-product-container]').find('.product_id').val();
@@ -1714,7 +1918,32 @@ $(document).ready(function(){
 
     });
 
+    $('.delete-from-wishlist').click(function(e){
+        e.preventDefault();
+        var product_id = $(this).closest('.product').find('.product_id').val();
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        
+        $.ajax({
+            method : "POST",
+            url : "/delete-from-wishlist",
+            data : {
+                'product_id' : product_id,
+            },
+            success : function(response){
+                window.location.reload();
+                swal ( "" ,response.status,"success" );
+            }
+        });
+
+    });
+
 });
+
+
 
 $(document).ready(function(){ 
     $('.place-order1').click(function(e){

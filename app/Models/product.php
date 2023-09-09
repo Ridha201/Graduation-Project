@@ -24,4 +24,13 @@ class product extends Model
    {
        return $this->hasOne(PSU::class, 'productID', 'id');
    }
+    public function ram ()
+    {
+         return $this->hasOne(RAM::class, 'productID', 'id');
+    }
+
+    public function cases ()
+    {
+         return $this->hasOne(Cases::class, 'productID', 'id');
+    }
 }
